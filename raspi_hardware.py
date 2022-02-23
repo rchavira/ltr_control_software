@@ -3,8 +3,12 @@ import time
 
 import struct
 import RPi.GPIO as GPIO
-import board
+import busio
+from board
 import adafruit_max31855
+# from adafruit_mcp9600 import MCP9600
+import mcp9600
+
 from raspi_interface import RaspiInterface
 from digitalio import DigitalInOut
 from adafruit_bus_device.spi_device import SPIDevice
@@ -44,6 +48,8 @@ class RaspiGPIO(RaspiInterface):
         self.adc_device = None
 
         self.thermo_flag = False
+
+        # self.i2c = busio.I2C(board.SCL, board.SDA)
 
     def shutdown(self):
         #self.spi.close()
@@ -93,17 +99,40 @@ class RaspiGPIO(RaspiInterface):
         self.set_digital(23, 0) # strobe LOW
         time.sleep(0.5)
 
-    def read_thermo(self):
+    def read_thermo(self, t_type):
+        result = 0
+        if t_type == "MCP9600":
+            result = self.read_thermo_mcp9600()
+        elif t_type == "MAX31855":
+            result = self.read_thermo_max31855()
+
+        result = (result * self.thermo_scale) + self.thermo_offset
+        return result
+
+    def read_thermo_mcp9600(self):
         result = 0
         self.thermo_flag = False
         try:
-            self.thermo_device =  adafruit_max31855.MAX31855(self.spi, self.cs)
-            result = (self.thermo_device.temperature * self.thermo_scale) + self.thermo_offset
+            self.thermo_device = mcp9600.MCP9600()
+            result = (self.thermo_device.get_hot_junction_temperature())
             self.thermo_device = None
         except Exception as ex:
             log.error(ex)
             self.thermo_flag = True
         return result
+
+    def read_thermo_max31855(self):
+        result = 0
+        self.thermo_flag = False
+        try:
+            self.thermo_device = adafruit_max31855.MAX31855(self.spi, self.cs)
+            result = self.thermo_device.temperature
+            self.thermo_device = None
+        except Exception as ex:
+            log.error(ex)
+            self.thermo_flag = True
+        return result
+
 
     def read_adc(self, channel):
         """

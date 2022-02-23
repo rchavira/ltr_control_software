@@ -220,10 +220,12 @@ class SensorMonitor(object):
             if not self.emulate:
                 for si in self.sensor_inputs.keys():
                     if self.sensor_inputs[si]["type"] == "T":
-                        cs = self.sensor_inputs[si]["cs"]
-                        self.raspi.chip_select(cs)
+                        if self.sensor_inputs[si]["channel"] == "MAX31855":
+                            cs = self.sensor_inputs[si]["cs"]
+                            self.raspi.chip_select(cs)
+
                         try:
-                            data = self.raspi.read_thermo()
+                            data = self.raspi.read_thermo(self.sensor_inputs[si]["channel"])
                             if self.raspi.thermo_flag:
                                 sf = True
                             self.sensorvalues[si].set_value(data)

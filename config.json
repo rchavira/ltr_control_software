@@ -15,7 +15,8 @@
             "thermal_fault": 3,
             "sensor_fault": 4,
             "current_power": 5,
-            "driver_state_register": 10
+            "driver_state_register": 10,
+            "version": 16
         },
         "max_registers": {
             "di": 60,
@@ -113,16 +114,16 @@
         "input_pins": [6, 16]
     },
     "sensor_inputs": {
-        "t1": { "type": "T", "channel": "T", "cs": 0},
-        "t2": { "type": "T", "channel": "T", "cs": 1},
-        "t3": { "type": "T", "channel": "T", "cs": 2},
-        "t4": { "type": "T", "channel": "T", "cs": 3},
-        "t5": { "type": "T", "channel": "T", "cs": 4},
-        "t6": { "type": "T", "channel": "T", "cs": 5},
-        "t7": { "type": "T", "channel": "T", "cs": 6},
-        "t8": { "type": "T", "channel": "T", "cs": 7},
-        "t9": { "type": "T", "channel": "T", "cs": 8},
-        "t10": { "type": "T", "channel": "T", "cs": 9},
+        "t1": { "type": "T", "channel": "MCP9600", "cs": 0},
+        "t2": { "type": "T", "channel": "MCP9600", "cs": 1},
+        "t3": { "type": "T", "channel": "MCP9600", "cs": 2},
+        "t4": { "type": "T", "channel": "MCP9600", "cs": 3},
+        "t5": { "type": "T", "channel": "MCP9600", "cs": 4},
+        "t6": { "type": "T", "channel": "MCP9600", "cs": 5},
+        "t7": { "type": "T", "channel": "MCP9600", "cs": 6},
+        "t8": { "type": "T", "channel": "MCP9600", "cs": 7},
+        "t9": { "type": "T", "channel": "MAX31855", "cs": 8},
+        "t10": { "type": "T", "channel": "MAX31855", "cs": 9},
         "i1": { "type": "A", "channel": "0", "cs": 10, "min": 0, "max": 25},
         "i2": { "type": "A", "channel": "1", "cs": 10, "min": 0, "max": 25},
         "i3": { "type": "A", "channel": "2", "cs": 10, "min": 0, "max": 25},
@@ -191,8 +192,9 @@
     "normal_operation": {
         "default_power_target": 400,
         "max_power": 4000,
-        "power_step": 800,
-        "step_delay": 600,
+        "step_min_power": 800,
+        "power_step": 80,
+        "step_delay": 60,
         "run_group": ["ttv1", "ttv2", "ttv3", "ttv4"]
     }
 }
