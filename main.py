@@ -121,6 +121,10 @@ class ControlSystem(object):
         self.modbus = ModbusServer(**self.config)
         self.modbus.start_server()
 
+        time.sleep(1)
+
+        self.modbus.set_info_registers()
+
         # last_run_mode = 2
         # last_target = -1
 

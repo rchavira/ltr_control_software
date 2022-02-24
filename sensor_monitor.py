@@ -126,6 +126,8 @@ class SensorMonitor(object):
         self.faninputs = 0
         self.sensor_flag = False
 
+        self.flags = {}
+
         self.sensorvalues = {}
 
         for si in self.sensor_inputs.keys():
@@ -220,17 +222,20 @@ class SensorMonitor(object):
             if not self.emulate:
                 for si in self.sensor_inputs.keys():
                     if self.sensor_inputs[si]["type"] == "T":
-                        if self.sensor_inputs[si]["channel"] == "MAX31855":
-                            cs = self.sensor_inputs[si]["cs"]
-                            self.raspi.chip_select(cs)
+                        # Thermo couple readings, can be one of two types
+                        data = 0
+                        if self.sensor_inputs[si]["chip"] == "MAX31855":
+                            data = self.raspi.read_thermo_max31855(self.sensor_inputs[si]["cs"])
+                        elif self.sensor_inputs[si]["chip"] == "MCP9600":
+                            data = self.raspi.read_thermo_mcp9600(self.sensor_inputs[si]["address"])
 
-                        try:
-                            data = self.raspi.read_thermo(self.sensor_inputs[si]["channel"])
-                            if self.raspi.thermo_flag:
-                                sf = True
-                            self.sensorvalues[si].set_value(data)
-                        except Exception as ex:
-                            log.error(ex)
+                        if self.raspi.thermo_flag:
+                            self.flags[si] = 1
+                            sf = True
+                        else:
+                            del self.flags[si]
+                        self.sensorvalues[si].set_value(data)
+
                     elif self.sensor_inputs[si]["type"] == "D":
                         pin = self.sensor_inputs[si]["pin"]
                         data = self.raspi.read_digital(pin)

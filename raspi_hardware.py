@@ -4,7 +4,7 @@ import time
 import struct
 import RPi.GPIO as GPIO
 import busio
-from board
+import board
 import adafruit_max31855
 # from adafruit_mcp9600 import MCP9600
 import mcp9600
@@ -56,6 +56,29 @@ class RaspiGPIO(RaspiInterface):
         GPIO.cleanup()
 
     def chip_select(self, channel):
+        dA = dB = dC = dD = 0
+        if channel & 1 == 1:
+            dA = 1
+        elif channel & 2 == 2:
+            dB = 1
+        elif channel & 4 == 4:
+            dC = 1
+        elif channel & 8 == 8:
+            dD = 1
+
+        self.set_digital(23, 1)  #strobe HIGH
+        time.sleep(0.5)
+
+        self.set_digital(17, dA)  # A
+        self.set_digital(27, dB)  # B
+        self.set_digital(22, dC)  # C
+        self.set_digital(5, dD)   # D
+
+        self.set_digital(23, 0) # strobe LOW
+        time.sleep(0.5)
+
+
+    def chip_select_hc(self, channel):
         # TODO: work on making this abstract instead of hard coded.
         # A  B  C  D
         # 17 27 22 5
@@ -99,21 +122,18 @@ class RaspiGPIO(RaspiInterface):
         self.set_digital(23, 0) # strobe LOW
         time.sleep(0.5)
 
-    def read_thermo(self, t_type):
+    def read_thermo(self):
+        """
+        depricated.
+        """
         result = 0
-        if t_type == "MCP9600":
-            result = self.read_thermo_mcp9600()
-        elif t_type == "MAX31855":
-            result = self.read_thermo_max31855()
-
-        result = (result * self.thermo_scale) + self.thermo_offset
         return result
 
-    def read_thermo_mcp9600(self):
+    def read_thermo_mcp9600(self, address):
         result = 0
         self.thermo_flag = False
         try:
-            self.thermo_device = mcp9600.MCP9600()
+            self.thermo_device = mcp9600.MCP9600(i2c_addr=address)
             result = (self.thermo_device.get_hot_junction_temperature())
             self.thermo_device = None
         except Exception as ex:
@@ -121,9 +141,12 @@ class RaspiGPIO(RaspiInterface):
             self.thermo_flag = True
         return result
 
-    def read_thermo_max31855(self):
+    def read_thermo_max31855(self, chip_select):
         result = 0
         self.thermo_flag = False
+
+        self.chip_select(chip_select)
+
         try:
             self.thermo_device = adafruit_max31855.MAX31855(self.spi, self.cs)
             result = self.thermo_device.temperature

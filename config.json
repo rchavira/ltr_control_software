@@ -15,14 +15,32 @@
             "thermal_fault": 3,
             "sensor_fault": 4,
             "current_power": 5,
-            "driver_state_register": 10,
-            "version": 16
+            "run_time": 6,
+            "target_power": 7,
+            "driver_state_register": 10
+        },
+        "flag_registers": {
+            "t1": 100,
+            "t2": 101,
+            "t3": 102,
+            "t4": 103,
+            "t5": 104,
+            "t6": 105,
+            "t7": 106,
+            "t8": 107,
+            "t9": 108,
+            "t10": 109,
+            "t11": 110,
+            "t12": 111,
+            "t13": 112,
+            "t14": 113,
+            "l1": 114
         },
         "max_registers": {
-            "di": 60,
-            "co": 60,
+            "di": 20,
+            "co": 20,
             "hr": 160,
-            "ir": 60
+            "ir": 160
         },
         "sensor_registers": {
             "t1": {"address": 20, "decimal_places": 2},
@@ -61,6 +79,19 @@
             "f7": {"address": 53, "decimal_places": 0},
             "f8": {"address": 54, "decimal_places": 0},
             "fT": {"address": 55, "decimal_places": 2}
+        },
+        "info_registers": {
+            "version": {"address": 16},
+            "t1": {"chip": 60, "address":70, "cs":70},
+            "t2": {"chip": 61, "address":71, "cs":71},
+            "t3": {"chip": 62, "address":72, "cs":72},
+            "t4": {"chip": 63, "address":73, "cs":73},
+            "t5": {"chip": 64, "address":74, "cs":74},
+            "t6": {"chip": 65, "address":75, "cs":75},
+            "t7": {"chip": 66, "address":76, "cs":76},
+            "t8": {"chip": 67, "address":77, "cs":77},
+            "t9": {"chip": 68, "address":78, "cs":78},
+            "t10": {"chip": 69, "address":79, "cs":79}
         },
         "emulation_registers": {
             "t1": {"address": 120, "decimal_places": 2, "default": 2500},
@@ -114,16 +145,16 @@
         "input_pins": [6, 16]
     },
     "sensor_inputs": {
-        "t1": { "type": "T", "channel": "MCP9600", "cs": 0},
-        "t2": { "type": "T", "channel": "MCP9600", "cs": 1},
-        "t3": { "type": "T", "channel": "MCP9600", "cs": 2},
-        "t4": { "type": "T", "channel": "MCP9600", "cs": 3},
-        "t5": { "type": "T", "channel": "MCP9600", "cs": 4},
-        "t6": { "type": "T", "channel": "MCP9600", "cs": 5},
-        "t7": { "type": "T", "channel": "MCP9600", "cs": 6},
-        "t8": { "type": "T", "channel": "MCP9600", "cs": 7},
-        "t9": { "type": "T", "channel": "MAX31855", "cs": 8},
-        "t10": { "type": "T", "channel": "MAX31855", "cs": 9},
+        "t1": { "type": "T", "chip": "MCP9600", "address": 96},
+        "t2": { "type": "T", "chip": "MCP9600", "address": 97},
+        "t3": { "type": "T", "chip": "MCP9600", "address": 98},
+        "t4": { "type": "T", "chip": "MCP9600", "address": 99},
+        "t5": { "type": "T", "chip": "MCP9600", "address": 100},
+        "t6": { "type": "T", "chip": "MCP9600", "address": 101},
+        "t7": { "type": "T", "chip": "MCP9600", "address": 102},
+        "t8": { "type": "T", "chip": "MCP9600", "address": 103},
+        "t9": { "type": "T", "chip": "MAX31855", "cs": 9},
+        "t10": { "type": "T", "chip": "MAX31855", "cs": 8},
         "i1": { "type": "A", "channel": "0", "cs": 10, "min": 0, "max": 25},
         "i2": { "type": "A", "channel": "1", "cs": 10, "min": 0, "max": 25},
         "i3": { "type": "A", "channel": "2", "cs": 10, "min": 0, "max": 25},
