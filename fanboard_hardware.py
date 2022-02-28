@@ -17,15 +17,17 @@ class FanBoardHardware(FanBoardInterface):
                 port=self.port, baudrate=self.baudrate, timeout=self.timeout
             )
         except Exception as ex:
-            log.debug(2, ex)
+            log.error(ex)
 
         super().__init__(**kwargs)
 
     def monitor_thread(self):
         self.monitor_running = True
         while self.monitor_running:
-            if self.fcb:
+            if self.fcb is not None:
                 while self.fcb.in_waiting:
                     data = self.fcb.readline()
                     self.process_data(data.decode("utf-8"))
-        self.fcb.close()
+
+        if self.fcb is not None:
+            self.fcb.close()

@@ -14,6 +14,7 @@ via Modbus TCP
 import json
 import logging
 import time
+import argparse
 
 from modbus_server import ModbusServer
 from sensor_monitor import SensorMonitor
@@ -172,6 +173,18 @@ class ControlSystem(object):
 
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(
+        prog="ltr_control",
+        usage='%(prog)s [options]',
+        description="LTR Control Software.  A modbus TCP interface to LTR Chassis hardware.",
+        epilog='Meta Copyright 2020'
+    )
+    parser.add_argument('--emulate', default='False', help='Emulate all hardware on the system.')
+    parser.add_argument('--config', default='config.json', help='Select which config file to use.')
+
+    args = parser.parse_args()
+
     cs = ControlSystem()
     cs.load_config()
     cs.run_system()

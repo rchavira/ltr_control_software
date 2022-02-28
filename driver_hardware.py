@@ -1,7 +1,7 @@
 import logging
 
-import busio
 from adafruit_pca9685 import PCA9685
+import busio
 from board import SCL, SDA
 from driver_interface import DriverInterface
 
@@ -22,16 +22,9 @@ class DriverHardware(DriverInterface):
             self.pca.frequency = self.frequency
 
     def set_duty_cycle(self, channel, dc):
-        # print(f"setting {channel} to DC: {dc}")
         self.dc[channel] = dc
 
         pwm = int(self.remap(self.dc[channel], 0, 100, 0, 0xFFFF))
 
-        self.pca.channels[channel].duty_cycle = pwm
-        # time.sleep(0.1)
-        """ l = []
-        for i in range(6):
-            l.append(f"{i}: {self.pca.channels[i].duty_cycle}")
-
-        states = ",".join(l)
-        print(f"{states}") """
+        if self.pca is not None:
+            self.pca.channels[channel].duty_cycle = pwm

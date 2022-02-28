@@ -100,21 +100,31 @@ class SystemManager(object):
                 # calculate power setting...
                 # TODO: add power ramp up...
                 if self.current_power < self.power_target:
-                    if last_power != self.current_power:
-                        step = self.power_step  #  100W steps, x 8 for each ttv
-                        if self.power_target - self.current_power < step:
-                            step = self.power_target - self.current_power
-                        self.current_power += step
-                        last_poewr = self.current_power
+                    if self.power_target < self.power_config["step_min_power"]:
+                        self.current_power = self.power_target
+                        last_power = self.current_power
                         last_change = time.time()
                     else:
-                        if time.time() - last_change >= self.step_delay:
-                            step = self.power_step  #  100W steps, x 8 for each ttv
+                        if last_power != self.current_power:
+                            step = self.power_step
                             if self.power_target - self.current_power < step:
                                 step = self.power_target - self.current_power
                             self.current_power += step
-                            last_poewr = self.current_power
+                            last_power = self.current_power
                             last_change = time.time()
+                        else:
+                            if time.time() - last_change >= self.step_delay:
+                                if last_power and self.current_power == 0:
+                                    step = self.power_config["step_min_power"]
+                                else:
+                                    step = self.power_step
+
+                                if self.power_target - self.current_power < step:
+                                    step = self.power_target - self.current_power
+
+                                self.current_power += step
+                                last_power = self.current_power
+                                last_change = time.time()
                 else:
                     self.current_power = self.power_target
                     last_power = self.current_power
