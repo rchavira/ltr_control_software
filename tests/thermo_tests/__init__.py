@@ -102,7 +102,7 @@ def hardware_test():
 
         for _ in range(8):
             for dev_id in tm.device_data.keys():
-                log.info(f"{dev_id}:{tm.get_values(dev_id)}")
+                log.debug(f"{dev_id}:{tm.get_values(dev_id)}")
             sleep(1)
 
         tm.stop_manager()

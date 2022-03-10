@@ -35,8 +35,8 @@ def test():
         sleep(2)
         for _ in range(8):
             for i in range(8):
-                log.info(f"{i}: {fans.channels[i]}")
-            log.info(f"{fans.temperature}")
+                log.debug(f"{i}: {fans.channels[i]}")
+            log.debug(f"{fans.temperature}")
             sleep(1)
         fans.stop_updater()
         fans = None

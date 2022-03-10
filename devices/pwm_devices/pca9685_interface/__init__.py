@@ -22,7 +22,7 @@ default_config = {
 
 class PCA9685Interface(PwmInterface):
     device: PCA9685
-    bus: BusManager
+    bus_mgr: BusManager
 
     def __init__(self, dev_name, bus, **kwargs):
         super().__init__(dev_name, bus, **kwargs)
@@ -37,14 +37,15 @@ class PCA9685Interface(PwmInterface):
             )
 
     def init_device(self):
-        result = True
-        self.bus.bus_blocker(self.dev_name, True)
-        try:
-            self.device = PCA9685(self.bus.bus)
-            self.device.frequency = self.frequency
-        except Exception as ex:
-            log.error(ex)
-            result = False
+        result = False
+        if self.bus_mgr.bus_blocker(self.dev_name, True):
+            result = True
+            try:
+                self.device = PCA9685(self.bus_mgr.get_bus())
+                self.device.frequency = self.frequency
+            except Exception as ex:
+                log.error(ex)
+                result = False
         return result
 
     def close_device(self):

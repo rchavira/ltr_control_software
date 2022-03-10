@@ -11,6 +11,7 @@ default_config = {
     "output_pins": [10,24,35]
 }
 
+
 class EmulatedIO(DioInterface):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

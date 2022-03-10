@@ -52,7 +52,7 @@ class DriverInterface(object):
         return result
 
     def set_duty_cycle(self, channel, dc):
-        #log.info(f"Set duty cycle on channel: {channel} to value: {dc}")
+        # log.info(f"Set duty cycle on channel: {channel} to value: {dc}")
         pwm = int(self.remap(dc, 0, 100, 0, 0xFFFF))
         self.channels[channel].dc = dc
         self.channels[channel].pwm = pwm

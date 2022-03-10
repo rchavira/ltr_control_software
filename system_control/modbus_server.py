@@ -104,6 +104,9 @@ class ModbusServer(object):
         )
         return values[0]
 
+    def set_run_status(self, rs):
+        self.update_holding_register(self.run_reg, [rs])
+
     def get_power_target(self):
         values = self.context[0].getValues(
             3, self.power_reg, count=1

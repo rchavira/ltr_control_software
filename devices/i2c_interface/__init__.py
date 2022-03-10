@@ -12,7 +12,6 @@ class I2CInterface(BusInterface):
     def __init__(self, bus_type, **kwargs):
         self.bus_type = bus_type
         self.bus = None
-        self.bus2 = None
 
 
 def loader(dev_type, **cfg):

@@ -17,6 +17,20 @@ class DriverData(object):
         self.target_dc = 0
         self.current_dc = 0
         self.current_dc_time_stamp = 0
+        self.locked = False
+        self.locker = []
+
+    def lock(self, locker):
+        self.locked = True
+        if locker not in self.locker:
+            self.locker.append(locker)
+
+    def unlock(self, locker):
+        if locker in self.locker:
+            self.locker.remove(locker)
+
+        if len(self.locker) == 0:
+            self.locked = False
 
 
 class DriverManager(object):
@@ -51,9 +65,8 @@ class DriverManager(object):
         self.devices[dev] = device
 
     def set_output(self, dev_id, duty_cycle):
-        # # log.debug(f"setting driver {dev_id} to {duty_cycle}%...")
-        dev = self.device_data[dev_id].device_id
-        if not self.devices[dev].drivers[dev_id].locked:
+        # log.debug(f"setting driver {dev_id} to {duty_cycle}%...")
+        if not self.device_data[dev_id].locked:
             self.device_data[dev_id].target_dc = duty_cycle
         else:
             self.device_data[dev_id].target_dc = 0
@@ -63,23 +76,31 @@ class DriverManager(object):
         for dev_id in self.device_data.keys():
             self.set_output(dev_id, duty_cycle)
 
+    def lock(self, dev_id, locker):
+        self.device_data[dev_id].lock(locker)
+
+    def unlock(self, dev_id, locker):
+        self.device_data[dev_id].unlock(locker)
+
     def lock_group(self, dev, locker):
-        self.group_lock[dev] = True
+        # self.group_lock[dev] = True
         for dev_id in self.device_data.keys():
-            self.devices[dev].drivers[dev_id].lock(locker)
+            if self.device_data[dev_id].device_id == dev:
+                self.lock(dev_id, locker)
 
     def unlock_group(self, dev, locker):
         lock_status = False
         for dev_id in self.device_data.keys():
-            self.devices[dev].drivers[dev_id].unlock(locker)
-            lock_status = self.devices[dev].drivers[dev_id].locked
-        self.group_lock[dev] = lock_status
+            if self.device_data[dev_id].device_id == dev:
+                self.unlock(dev_id, locker)
+            lock_status = self.device_data[dev_id].locked
+        # self.group_lock[dev] = lock_status
 
     def _set_driver_dc(self, dev, dev_id, dc):
-        if not self.devices[dev].drivers[dev_id].locked:
-            self.devices[dev].init_device()
-            self.devices[dev].set_duty_cycle(dev_id, dc)
-            self.devices[dev].close_device()
+        if not self.device_data[dev_id].locked:
+            if self.devices[dev].init_device():
+                self.devices[dev].set_duty_cycle(dev_id, dc)
+                self.devices[dev].close_device()
 
     def updater(self):
         while self.updater_running:

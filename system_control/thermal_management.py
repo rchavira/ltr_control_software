@@ -102,7 +102,7 @@ class ThermalManager(object):
             self.inlet_temp = self.inlet_group.value
             self.outlet_temp = self.outlet_group.value
             self.monitor_temp = self.monitor_group.value
-
+            log.debug(f"{self.monitor_temp}, {self.inlet_temp}, {self.outlet_temp}")
             thermal_flag = False
 
             fan_dc = self.default_fan_value

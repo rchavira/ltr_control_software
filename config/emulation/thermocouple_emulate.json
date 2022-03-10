@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "update_interval": 0.1,
+    "temp_decimals": 2,
+    "devices": {
+        "t1": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t2": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t3": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t4": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t5": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t6": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t7": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t8": {"device_type": "emulated", "junction_values_file": "tcase.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t9": {"device_type": "emulated", "junction_values_file": "tinlet.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9},
+        "t10": {"device_type": "emulated", "junction_values_file": "tinlet.txt", "internal_values_file": "tint.txt", "flag_values_file": "zeros.txt", "cs": 9}
+    }
+}

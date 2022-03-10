@@ -11,7 +11,7 @@ default_configuration = {
     "pinC": 22,
     "pinD": 5,
     "strobe": 23,
-    "strobe_delay": 0.5
+    "strobe_delay": 0.1
 }
 
 
@@ -31,7 +31,7 @@ class CD4515Interface(MuxDeviceInterface):
         dC = 1 if (output_ch & 4) else 0
         dD = 1 if (output_ch & 8) else 0
 
-        # # log.debug(f"MUX setting output {output_ch}: encoded to {[dA, dB, dC, dD]}")
+        # log.debug(f"MUX setting output {output_ch}: encoded to {[dA, dB, dC, dD]}")
 
         self.dio.write_digital(self.strobe, 1)
         sleep(self.strobe_delay)

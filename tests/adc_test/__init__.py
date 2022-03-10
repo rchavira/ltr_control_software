@@ -142,7 +142,7 @@ def hardware_test():
 
         for _ in range(15):
             for dev_id in am.data.keys():
-                # log.debug(f"{am.get_values(dev_id)}")
+                log.debug(f"{am.get_values(dev_id)}")
             sleep(1)
 
         log.info("Stopping adc manager...")

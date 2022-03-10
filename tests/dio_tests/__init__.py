@@ -53,7 +53,7 @@ def hardware_test():
             sleep(0.1)
         for p in dio.input_pins:
             v = dio.read_digital(p)
-            log.info(f"Pin {p}: {v}")
+            # log.debug(f"Pin {p}: {v}")
             sleep(0.5)
     except Exception as ex:
         # log.debug("Failure on interface usage")

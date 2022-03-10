@@ -68,7 +68,7 @@ def test():
         log.info("reading sensors...")
         for _ in range(8):
             for dev_id in sm.sensor_data.keys():
-                log.info(f"{dev_id}: {sm.sensor_data[dev_id]}")
+                log.debug(f"{dev_id}: {sm.sensor_data[dev_id]}")
             sleep(1)
 
         sm.stop_manager()

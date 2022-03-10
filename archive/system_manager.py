@@ -245,7 +245,7 @@ class SystemManager(object):
             t_data = sdata.get_running_mean()
 
             if t_data > self.leak_config["threshold"]:
-                log.info(f"Internal Leak detected value={t_data}, threshold={self.leak_config['threshold']}")
+                log.debug(f"Internal Leak detected value={t_data}, threshold={self.leak_config['threshold']}")
                 self.lock_outputs(self.leak_config["shutdown_group"], "leak_monitor")
                 self.sensor_monitor.report_out(0)
                 self.leak_flag = True
@@ -258,10 +258,10 @@ class SystemManager(object):
             # check external leak signal
             # print(f"ext_leak: {sdict[self.leak_config['external']]}")
             # if sdict[self.leak_config["external"]] == 0:
-                #log.info("External Leak Detected")
+                # log.info("External Leak Detected")
                 # self.lock_outputs(self.leak_config["shutdown_group"], "leak_monitor")
                 # todo: check if this signal is pulled up or down
-                #self.sensor_monitor.report_out(1)
+                # self.sensor_monitor.report_out(1)
             # else:
 
     def e_stop_activate(self):

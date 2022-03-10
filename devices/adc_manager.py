@@ -63,7 +63,7 @@ class AdcManager(object):
             for dev_id in self.data.keys():
                 dev = self.data[dev_id].device_id
                 self.devices[dev].read_channel(dev_id)
-                log.debug(f"{dev_id}: {self.get_values(dev_id)}")
+                # log.debug(f"{dev_id}: {self.get_values(dev_id)}")
             sleep(self.update_interval)
 
     def start_manager(self):
@@ -78,6 +78,7 @@ class AdcManager(object):
         self.updater_running = False
         if self.update_thread is not None:
             self.update_thread.join(2)
+
         self.update_thread = None
 
     def get_values(self, dev_id):

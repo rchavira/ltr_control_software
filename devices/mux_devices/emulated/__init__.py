@@ -12,4 +12,4 @@ class EmulatedMux(MuxDeviceInterface):
         super().__init__(dio, **kwargs)
 
     def encode(self, output_ch):
-        # log.debug(f"MUX setting output {output_ch}")
+        log.debug(f"MUX setting output {output_ch}")

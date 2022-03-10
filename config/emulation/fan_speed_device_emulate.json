@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "port": "/dev/ttyUSB0",
+    "baudrate": 115200,
+    "timeout": 0.5,
+    "channel_count": 8,
+    "values_file": "fan_speed_values.txt",
+    "temp_file": "fan_board_temp_values.txt"
+}

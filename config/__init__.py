@@ -11,7 +11,13 @@ def check_path(config_file):
 def read_config(config_file):
     logging.info(f"Loading {config_file}")
     config = {}
-    with open(path.join("config", config_file), "r") as f:
+
+    if "emulate" in config_file:
+        f_name = path.join("config", "emulation", config_file)
+    else:
+        f_name = path.join("config", config_file)
+
+    with open(f_name, "r") as f:
         try:
             config = json.load(f)
         except Exception as ex:

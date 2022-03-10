@@ -100,11 +100,11 @@ class ThermoManager(object):
     def updater(self):
         while self.updater_running:
             for dev_id in self.devices.keys():
-                self.devices[dev_id].init_device()
-                self.device_data[dev_id].junction_temp = self.devices[dev_id].get_junction_temp()
-                self.device_data[dev_id].internal_temp = self.devices[dev_id].get_internal_temp()
-                self.device_data[dev_id].flag = self.devices[dev_id].get_faults()
-                self.devices[dev_id].close_device()
+                if self.devices[dev_id].init_device():
+                    self.device_data[dev_id].junction_temp = self.devices[dev_id].get_junction_temp()
+                    self.device_data[dev_id].internal_temp = self.devices[dev_id].get_internal_temp()
+                    self.device_data[dev_id].flag = self.devices[dev_id].get_faults()
+                    self.devices[dev_id].close_device()
                 # log.debug(f"{dev_id}: {self.get_values(dev_id)}")
             sleep(self.update_interval)
 

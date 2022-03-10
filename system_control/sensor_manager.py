@@ -197,20 +197,20 @@ class SensorManager(object):
             sleep(0.5)
 
     def get_sensor_data(self):
-        # # log.debug(f"Reading {len(self.adc_inputs.data)} ADC inputs...")
+        # log.debug(f"Reading {len(self.adc_inputs.data)} ADC inputs...")
         for dev_id in self.adc_inputs.data.keys():
             self.sensor_data[dev_id] = self.adc_inputs.get_values(dev_id)[0]
 
-        # # log.debug(f"Reading {len(self.thermo_inputs.device_data)} Thermo inputs...")
+        # log.debug(f"Reading {len(self.thermo_inputs.device_data)} Thermo inputs...")
         for dev_id in self.thermo_inputs.device_data.keys():
             self.sensor_data[dev_id] = self.thermo_inputs.get_values(dev_id)[0]
 
-        # # log.debug(f"Reading {len(self.dio.input_pins)} Digital inputs...")
+        # log.debug(f"Reading {len(self.dio.input_pins)} Digital inputs...")
         for pin in self.dio.input_pins:
             dev_id = f"d{pin}"
             self.sensor_data[dev_id] = self.dio.read_digital(pin)
 
-        # # log.debug(f"Reading {len(self.fan_speed_device.channels)} Fan Speed inputs...")
+        # log.debug(f"Reading {len(self.fan_speed_device.channels)} Fan Speed inputs...")
         for i in range(len(self.fan_speed_device.channels)):
             dev_id = f"fan_rpm{i+1}"
             self.sensor_data[dev_id] = self.fan_speed_device.channels[i]

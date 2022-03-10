@@ -34,7 +34,7 @@ class SystemManager(object):
     mb: ModbusServer
     main_thread: Thread
 
-    def __init__(self):
+    def __init__(self, config_file_name):
         self.adc = None
         self.spi = None
         self.i2c = None
@@ -45,7 +45,7 @@ class SystemManager(object):
         self.sm = None
         self.tm = None
         self.mb = None
-        self.cfg = read_config("system_config.json")
+        self.cfg = read_config(config_file_name)
 
         self.main_thread = None
         self.running = False
@@ -127,6 +127,8 @@ class SystemManager(object):
         shutdown = 0
         log.debug(f"PT:{power_target} Run:{run_ttv}")
         self.mb.set_power_target(power_target)
+        self.mb.set_run_status(run_ttv)
+
         while self.running:
             power_target = self.mb.get_power_target()
             run_ttv = self.mb.get_run_status()
@@ -138,9 +140,10 @@ class SystemManager(object):
 
             # convert power target to dc %
             pt_dc = int((power_target / self.max_power_target) * 100)
+            # log.debug(f"PT:{power_target} DC:{pt_dc} Run:{run_ttv}")
             if run_ttv > 0:
-                log.debug(f"PT:{power_target} DC:{pt_dc}")
                 for dev_id in self.tm.driver_group:
+                    # log.debug(f"{dev_id}: {pt_dc}")
                     self.dm.set_output(dev_id, pt_dc)
             else:
                 for dev_id in self.tm.driver_group:
@@ -170,5 +173,5 @@ class SystemManager(object):
                 ddict[dev_id] = self.dm.device_data[dev_id].current_dc
 
             self.mb.update_driver_states(ddict)
-            sleep(1)
+            sleep(0.5)
 

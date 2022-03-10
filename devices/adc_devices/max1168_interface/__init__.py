@@ -49,18 +49,17 @@ class Max1168Interface(AdcInterface):
 
     def read_channel(self, dev_id):
 
-        self.bus_mgr.bus_blocker(dev_id, True)
+        if self.bus_mgr.bus_blocker(dev_id, True):
+            self.chip_select.chip_select(self.cs)
 
-        self.chip_select.chip_select(self.cs)
+            cmd = struct.pack("<H", (int(self.channels[dev_id].channel) << 5 | 3 << 3))
+            response = self.bus_mgr.send_and_receive(cmd, 3)
+            raw, _ = struct.unpack("<HB", response)
+            self.channels[dev_id].set_value(raw)
 
-        cmd = struct.pack("<H", (int(self.channels[dev_id].channel) << 5 | 3 << 3))
-        response = self.bus_mgr.bus.send_and_receive(cmd, 3)
-        raw, _ = struct.unpack("<HB", response)
-        self.channels[dev_id].set_value(raw)
+            self.chip_select.reset()
 
-        self.chip_select.reset()
-
-        self.bus_mgr.bus_blocker(dev_id, False)
+            self.bus_mgr.bus_blocker(dev_id, False)
 
         return self.channels[dev_id].value
 

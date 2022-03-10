@@ -29,15 +29,16 @@ class MAX31855Interface(ThermoInterface):
         self.dev_id = dev_id
 
     def init_device(self):
-        result = True
-        self.bus_mgr.bus_blocker(self.dev_id, True)
-        if self.chip_select is not None:
-            self.chip_select.chip_select(self.cs)
-        try:
-            self.device = adafruit_max31855.MAX31855(self.bus_mgr.bus.bus, self._cs)
-        except Exception as ex:
-            log.error(ex)
-            result = False
+        result = False
+        if self.bus_mgr.bus_blocker(self.dev_id, True):
+            result = True
+            if self.chip_select is not None:
+                self.chip_select.chip_select(self.cs)
+            try:
+                self.device = adafruit_max31855.MAX31855(self.bus_mgr.get_bus(), self._cs)
+            except Exception as ex:
+                log.error(ex)
+                result = False
         return result
 
     def close_device(self):

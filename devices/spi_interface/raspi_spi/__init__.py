@@ -22,7 +22,7 @@ class RaspiSpi(SpiInterface):
 
     def __init__(self, bus_type, **kwargs):
         self.bus = board.SPI()
-        self.bus2 = SPIDevice(self.bus)
+        # self.bus2 = SPIDevice(self.bus)
 
         self.cs = DigitalInOut(board.D4)
 

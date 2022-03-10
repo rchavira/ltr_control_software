@@ -14,5 +14,5 @@ class RaspiI2c(I2CInterface):
     def __init__(self, bus_type, **kwargs):
         self.bus_type = bus_type
         self.bus = busio.I2C(SCL, SDA)
-        self.bus2 = None
+
 
