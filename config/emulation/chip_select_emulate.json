@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "device_type": "cd451x",
+    "cs_reset": 15,
+    "config": {
+        "pinA": 17,
+        "pinB": 27,
+        "pinC": 22,
+        "pinD": 5,
+        "strobe": 23,
+        "strobe_delay": 0.5
+    }
+}

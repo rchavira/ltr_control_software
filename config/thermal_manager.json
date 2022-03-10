@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "fan_group": ["fan1", "fan2"],
+    "driver_group": ["ttv1", "ttv2", "ttv3", "ttv4"],
+    "inlet_group": ["t9", "t10"],
+    "outlet_group": ["tFCB"],
+    "monitor_group": ["t1", "t2", "t3", "t4"],
+    "monitor_threshold_temp": 70,
+    "outlet_threshold_temp": 45,
+    "inlet_threshold_temp": 45,
+    "fan_table": [
+            [45, 60],
+            [44, 45],
+            [42, 30],
+            [40, 20]
+    ],
+    "default_fan_value": 20,
+    "sample_size": 10,
+    "fan_run_mode": "fan_table"
+}

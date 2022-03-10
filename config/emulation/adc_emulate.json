@@ -1,0 +1,36 @@
+{
+    "update_interval": 0.1,
+    "devices": {
+        "adc1": {
+            "device_type": "emulated",
+            "input_file": "adc.txt",
+            "resolution": 1024,
+            "chip_select": 10,
+            "devices": {
+                "i1": {"channel": 0, "min_val": 0, "max_val": 100},
+                "i2": {"channel": 1, "min_val": 0, "max_val": 100},
+                "i3": {"channel": 2, "min_val": 0, "max_val": 100},
+                "i4": {"channel": 3, "min_val": 0, "max_val": 100},
+                "v1": {"channel": 4, "min_val": 0, "max_val": 120},
+                "v2": {"channel": 5, "min_val": 0, "max_val": 120},
+                "v3": {"channel": 6, "min_val": 0, "max_val": 120},
+                "v4": {"channel": 7, "min_val": 0, "max_val": 120}
+            }
+        },
+        "adc2": {
+            "device_type": "emulated",
+            "input_file": "adc.txt",
+            "resolution": 1024,
+            "chip_select": 11,
+            "devices": {
+                "t11": {"channel": 0, "min_val": 0, "max_val": 75},
+                "t12": {"channel": 1, "min_val": 0, "max_val": 75},
+                "a1": {"channel": 2, "min_val": 0, "max_val": 1024},
+                "l1": {"channel": 3, "min_val": 0, "max_val": 65535},
+                "t13": {"channel": 4, "min_val": 0, "max_val": 75},
+                "t14": {"channel": 5, "min_val": 0, "max_val": 75},
+                "i5": {"channel": 6, "min_val": 0, "max_val": 200}
+            }
+        }
+    }
+}

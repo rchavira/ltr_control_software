@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "fan_speed_device_type": "fan_control_board",
+    "internal_leak_dev_id": "leak_1",
+    "leak_detection_mode": "delta",
+    "leak_detection_value": 100,
+    "external_leak_pin": 1,
+    "leak_report_out_pin": 2,
+    "leak_report_active": 0,
+    "leak_report_inactive": 1,
+    "leak_sample_rate": 10
+}

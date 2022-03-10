@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "port": "/dev/ttyUSB0",
+    "baudrate": 115200,
+    "timeout": 0.5,
+    "channel_count": 8
+}

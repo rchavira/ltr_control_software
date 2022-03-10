@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "update_interval": 1,
+    "devices": {
+        "ttv_group": {
+            "device_type": "pca9685",
+            "config": {
+                "ramp_up_dc_step": 2,
+                "ramp_up_delay_seconds": 2,
+                "frequency": 60,
+                "i2c_addr": 68,
+                "drivers": {
+                    "ttv1": {
+                        "channel": 0,
+                        "offset": 0,
+                        "resolution": 65535
+                    },
+                    "ttv2": {
+                        "channel": 1,
+                        "offset": 0,
+                        "resolution": 65535
+                    },
+                    "ttv3": {
+                        "channel": 2,
+                        "offset": 0,
+                        "resolution": 65535
+                    },
+                    "ttv4": {
+                        "channel": 3,
+                        "offset": 0,
+                        "resolution": 65535
+                    }
+
+                }
+            }
+        },
+        "fan_group": {
+            "device_type": "pca9685",
+            "config": {
+                "ramp_up_dc_step": 0,
+                "ramp_up_delay_seconds": 0,
+                "frequency": 60,
+                "i2c_addr": 68,
+                "drivers": {
+                    "fan1": {
+                        "channel": 4,
+                        "offset": 0,
+                        "resolution": 65535
+                    },
+                    "fan2": {
+                        "channel": 5,
+                        "offset": 0,
+                        "resolution": 65535
+                    }
+
+                }
+            }
+        }
+    }
+}

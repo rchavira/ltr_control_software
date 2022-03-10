@@ -1,3 +1,3 @@
-systemctl stop ltr_controller.service
-systemctl disable ltr_controller.service
+systemctl stop control_software.service
+systemctl disable control_software.service
 
