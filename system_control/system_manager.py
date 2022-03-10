@@ -151,6 +151,8 @@ class SystemManager(object):
 
             self.mb.update_sensor_info(self.sm.sensor_data)
 
+            self.mb.update_temp_registers(self.tm.monitor_temp, self.tm.inlet_temp, self.tm.outlet_temp)
+
             current_power_dc = self.dm.device_data[self.tm.driver_group[0]].current_dc
             time_at_power = time() - self.dm.device_data[self.tm.driver_group[0]].current_dc_time_stamp
             current_power = (current_power_dc/100) * self.max_power_target

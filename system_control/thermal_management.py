@@ -131,9 +131,13 @@ class ThermalManager(object):
 
             self.thermal_flag = thermal_flag
             for dev_id in self.fan_group:
+                log.debug(f"{dev_id}: {fan_dc}")
                 self.driver_manager.set_output(dev_id, fan_dc)
 
             sleep(1)
+        log.info("Setting low fan value")
+        for dev_id in self.fan_group:
+            self.driver_manager.set_output(dev_id, 10)
 
 
 

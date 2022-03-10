@@ -51,7 +51,10 @@ class ModbusServer(object):
 
         self.info_registers = self.modbus_config["info_registers"]
         self.sensor_info = kwargs["sensor_registers"]
-        self.version_register = self.info_registers["version"]["address"]
+        self.version_register = self.info_registers["version"]
+        self.monitor_temp = self.info_registers["monitor_temp"]
+        self.inlet_temp = self.info_registers["inlet_temp"]
+        self.outlet_temp = self.info_registers["outlet_temp"]
 
         self.version = 4
 
@@ -125,6 +128,11 @@ class ModbusServer(object):
                 self.update_input_register(self.modbus_config["sensor_registers"][si]["address"], values)
             except Exception as ex:
                 log.error(f"{si}: {sdict[si]} - {ex}")
+
+    def update_temp_registers(self, monitor, inlet, outlet):
+        self.update_input_register(self.monitor_temp, [int(monitor * 100)])
+        self.update_input_register(self.inlet_temp, [int(inlet * 100)])
+        self.update_input_register(self.outlet_temp, [int(outlet * 100)])
 
     def update_input_register(self, addr, values):
         self.context[0].setValues(4, addr, values)

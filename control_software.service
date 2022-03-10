@@ -1,0 +1,16 @@
+[Unit]
+Description=LTR Control Interface and Modbus Server
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=python /home/pi/control_software/main.py --service
+WorkingDirectory=/home/pi/control_software
+User=root
+Group=root
+Environment=
+TimeoutStopSec=30
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

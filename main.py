@@ -22,7 +22,7 @@ if __name__ == "__main__":
     if args.emulate:
         config_file = "emulate_config.json"
     else:
-        config_file = "emulate_config.json"
+        config_file = "system_config.json"
 
     loglevel = logging.DEBUG
 

@@ -50,7 +50,7 @@ class PCA9685Interface(PwmInterface):
 
     def close_device(self):
         self.device = None
-        self.bus.bus_blocker(self.dev_name, False)
+        self.bus_mgr.bus_blocker(self.dev_name, False)
 
     def set_duty_cycle(self, dev_id, dc):
         self.drivers[dev_id].set_dc(dc)

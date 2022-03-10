@@ -33,11 +33,11 @@ def test():
         log.info("Starting sensors manager...")
         fans.start_updater()
         sleep(2)
-        for _ in range(8):
+        for _ in range(10):
             for i in range(8):
                 log.debug(f"{i}: {fans.channels[i]}")
             log.debug(f"{fans.temperature}")
-            sleep(1)
+            sleep(5)
         fans.stop_updater()
         fans = None
     except Exception as ex:

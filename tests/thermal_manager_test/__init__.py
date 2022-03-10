@@ -27,14 +27,7 @@ spi_cfg = {}
 
 def test():
     log = logging.getLogger(__name__)
-
-    from tests.adc_test import hardware_cfg as adc_cfg
-    from tests.dio_tests import hardware_cfg as dio_cfg
-    from tests.chip_select_test import hardware_cfg as ch_sel_cfg
-    from tests.thermo_tests import hardware_cfg as thermo_cfg
-    from tests.fan_tests import hardware_cfg as fans_cfg
-    from tests.sensor_tests import hardware_config as sensor_cfg
-    from tests.driver_tests import hardware_cfg as driver_cfg
+    from config import read_config
 
     try:
         from system_control import ControllerDeviceTypes
@@ -48,7 +41,20 @@ def test():
         from devices.driver_manager import DriverManager
         from system_control.thermal_management import ThermalManager
     except Exception as ex:
-        # log.debug("Error during imports")
+        log.debug("Error during imports")
+        log.error(ex)
+        return False
+
+    try:
+        adc_cfg = read_config("adc_config.json")
+        dio_cfg = read_config("dio_config.json")
+        ch_sel_cfg = read_config("chip_select_config.json")
+        thermo_cfg = read_config("thermocouple_emulate.json")
+        fans_cfg = read_config("fan_speed_device_config.json")
+        sensor_cfg = read_config("sensor_manager.json")
+        driver_cfg = read_config("driver_config.json")
+    except Exception as ex:
+        log.debug("Error during config load")
         log.error(ex)
         return False
 
@@ -70,7 +76,7 @@ def test():
         tm = ThermalManager(sm, dm, **hardware_config)
 
     except Exception as ex:
-        # log.debug("Error during init")
+        log.debug("Error during init")
         log.error(ex)
         return False
 
@@ -104,7 +110,7 @@ def test():
         sm = None
         log.info("Thermal Manager Test Complete")
     except Exception as ex:
-        # log.debug("Error during interface")
+        log.debug("Error during interface")
         log.error(ex)
         return False
     return True

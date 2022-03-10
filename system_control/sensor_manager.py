@@ -115,26 +115,13 @@ class SensorManager(object):
 
         # ADC Initialization
         self.adc_inputs = adc
-        # self.adc_inputs = AdcManager(
-        #     self.spi,
-        #     self.i2c,
-        #     self.ch_sel,
-        #     **kwargs["adc"]
-        # )
 
         # Thermocouple Initialization
         self.thermo_inputs = thermo
-        # self.thermo_inputs = ThermoManager(
-        #     self.spi,
-        #     self.i2c,
-        #     self.ch_sel,
-        #     **kwargs["thermo"]
-        # )
 
         self.update_thread = None
         self.updater_running = False
 
-        # self.fan_speed_device = fan_loader(kwargs["fan_speed_device_type"], **kwargs["fan_speed_device"])
         self.fan_speed_device = fans
 
         self.sensor_flag = False

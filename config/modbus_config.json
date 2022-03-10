@@ -81,16 +81,9 @@
         "tFCB": {"address": 55, "decimal_places": 2}
     },
     "info_registers": {
-        "version": {"address": 16},
-        "t1": {"chip": 60, "address":70, "cs":70},
-        "t2": {"chip": 61, "address":71, "cs":71},
-        "t3": {"chip": 62, "address":72, "cs":72},
-        "t4": {"chip": 63, "address":73, "cs":73},
-        "t5": {"chip": 64, "address":74, "cs":74},
-        "t6": {"chip": 65, "address":75, "cs":75},
-        "t7": {"chip": 66, "address":76, "cs":76},
-        "t8": {"chip": 67, "address":77, "cs":77},
-        "t9": {"chip": 68, "address":78, "cs":78},
-        "t10": {"chip": 69, "address":79, "cs":79}
+        "version": 16,
+        "monitor_temp": 70,
+        "inlet_temp": 71,
+        "outlet_temp": 72
     }
 }

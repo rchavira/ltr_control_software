@@ -4,7 +4,7 @@
     "fan_group": ["fan1", "fan2"],
     "driver_group": ["ttv1", "ttv2", "ttv3", "ttv4"],
     "inlet_group": ["t9", "t10"],
-    "outlet_group": ["t10", "t11"],
+    "outlet_group": ["tFCB"],
     "monitor_group": ["t1", "t2", "t3", "t4"],
     "monitor_threshold_temp": 70,
     "outlet_threshold_temp": 45,
@@ -15,7 +15,7 @@
             [42, 30],
             [40, 20]
     ],
-    "default_fan_value": 70,
+    "default_fan_value": 20,
     "sample_size": 10,
     "fan_run_mode": "fan_table"
 }
