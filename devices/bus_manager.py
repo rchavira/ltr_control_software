@@ -19,6 +19,7 @@ class BusManager(object):
     bus_type: BusType
 
     def __init__(self, bus_type, device_type, **kwargs):
+        self.bus2 = None
         self.blocked = False
         self.blocker = ""
         self.bus_type = bus_type
@@ -27,6 +28,8 @@ class BusManager(object):
             self.bus = spi_loader(device_type, **kwargs)
         elif self.bus_type == BusType.i2c:
             self.bus = i2c_loader(device_type, **kwargs)
+
+        self.bus2 = self.bus.bus2
 
     def get_bus(self):
         return self.bus.bus
@@ -40,7 +43,7 @@ class BusManager(object):
     def bus_blocker(self, dev_id, block):
         if block:
             if self.blocked:
-                log.debug(f"{dev_id} waiting for i2c bus, blocked by {self.blocker}")
+                # log.debug(f"{dev_id} waiting for i2c bus, blocked by {self.blocker}")
                 while self.blocked:
                     sleep(1)
             else:

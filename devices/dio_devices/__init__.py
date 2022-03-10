@@ -28,7 +28,7 @@ class DioInterface(object):
 
 
 def loader(dev_type, **cfg):
-    log.debug(f"Loading Device Type: {dev_type}")
+    # log.debug(f"Loading Device Type: {dev_type}")
     device = None
     if dev_type == ControllerDeviceTypes.emulated:
         if 'EmulatedIO' not in sys.modules:

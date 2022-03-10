@@ -48,7 +48,7 @@ def test():
         from devices.driver_manager import DriverManager
         from system_control.thermal_management import ThermalManager
     except Exception as ex:
-        log.debug("Error during imports")
+        # log.debug("Error during imports")
         log.error(ex)
         return False
 
@@ -70,7 +70,7 @@ def test():
         tm = ThermalManager(sm, dm, **hardware_config)
 
     except Exception as ex:
-        log.debug("Error during init")
+        # log.debug("Error during init")
         log.error(ex)
         return False
 
@@ -104,7 +104,7 @@ def test():
         sm = None
         log.info("Thermal Manager Test Complete")
     except Exception as ex:
-        log.debug("Error during interface")
+        # log.debug("Error during interface")
         log.error(ex)
         return False
     return True

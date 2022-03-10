@@ -51,7 +51,7 @@ class DriverManager(object):
         self.devices[dev] = device
 
     def set_output(self, dev_id, duty_cycle):
-        # log.debug(f"setting driver {dev_id} to {duty_cycle}%...")
+        # # log.debug(f"setting driver {dev_id} to {duty_cycle}%...")
         dev = self.device_data[dev_id].device_id
         if not self.devices[dev].drivers[dev_id].locked:
             self.device_data[dev_id].target_dc = duty_cycle
@@ -59,18 +59,18 @@ class DriverManager(object):
             self.device_data[dev_id].target_dc = 0
 
     def set_group(self, dev, duty_cycle):
-        log.debug(f"Setting group {dev} ({len(self.devices[dev].drivers)} devices) to {duty_cycle}%...")
-        for dev_id in self.devices[dev].drivers.keys():
+        # log.debug(f"Setting group {dev} to {duty_cycle}%...")
+        for dev_id in self.device_data.keys():
             self.set_output(dev_id, duty_cycle)
 
     def lock_group(self, dev, locker):
         self.group_lock[dev] = True
-        for dev_id in self.devices[dev].drivers.keys():
+        for dev_id in self.device_data.keys():
             self.devices[dev].drivers[dev_id].lock(locker)
 
     def unlock_group(self, dev, locker):
         lock_status = False
-        for dev_id in self.devices[dev].drivers.keys():
+        for dev_id in self.device_data.keys():
             self.devices[dev].drivers[dev_id].unlock(locker)
             lock_status = self.devices[dev].drivers[dev_id].locked
         self.group_lock[dev] = lock_status

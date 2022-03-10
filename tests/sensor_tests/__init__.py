@@ -36,7 +36,7 @@ def test():
         from devices.thermo_manager import ThermoManager
         from devices.fan_controller_devices import FanDevType, loader as fan_loader
     except Exception as ex:
-        log.debug("Error during imports")
+        # log.debug("Error during imports")
         log.error(ex)
         return False
 
@@ -54,7 +54,7 @@ def test():
 
         sm = SensorManager(spi_mgr, i2c_mgr, ch_sel, dio, adc, thermo, fans, **hardware_config)
     except Exception as ex:
-        log.debug("Error during init")
+        # log.debug("Error during init")
         log.error(ex)
         return False
 
@@ -74,7 +74,7 @@ def test():
         sm.stop_manager()
         sm = None
     except Exception as ex:
-        log.debug("Error during interface")
+        # log.debug("Error during interface")
         log.error(ex)
         return False
     return True

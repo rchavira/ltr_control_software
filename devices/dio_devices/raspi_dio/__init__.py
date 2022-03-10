@@ -7,7 +7,6 @@ import logging
 
 log = logging.getLogger(__name__)
 
-
 default_config = {
     "input_pins": [6, 16],
     "output_pins": [5, 17, 22, 23, 26, 27]
@@ -44,5 +43,5 @@ class RaspiDio(DioInterface):
         if pin in self.output_pins.keys():
             return self.output_pins[pin]
         elif pin in self.input_pins.keys():
-            self.input_pins[pin] = True if GPIO.input(pin)==1 else False
+            self.input_pins[pin] = True if GPIO.input(pin) == 1 else False
             return self.input_pins[pin]

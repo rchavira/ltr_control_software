@@ -40,7 +40,7 @@ test_config = {
 }
 
 hardware_cfg = {
-    "update_interval": 1,
+    "update_interval": 0.1,
     "devices": {
         "adc1": {
             "device_type": "max1168",
@@ -122,7 +122,7 @@ def hardware_test():
 
     try:
         log.info("Initializing Hardware")
-        dio = dio_loader(ControllerDeviceTypes.raspi, dio_cfg)
+        dio = dio_loader(ControllerDeviceTypes.raspi, **dio_cfg)
         cs = ChipSelector(dio, **ch_sel_cfg)
 
         cfg = spi_cfg
@@ -140,9 +140,9 @@ def hardware_test():
     try:
         am.start_manager()
 
-        for _ in range(8):
+        for _ in range(15):
             for dev_id in am.data.keys():
-                log.debug(f"{am.get_values(dev_id)}")
+                # log.debug(f"{am.get_values(dev_id)}")
             sleep(1)
 
         log.info("Stopping adc manager...")

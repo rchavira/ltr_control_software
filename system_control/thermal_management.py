@@ -90,7 +90,8 @@ class ThermalManager(object):
     def updater(self):
         sleep(2)
         log.info("Setting default fan value...")
-        self.driver_manager.set_group(self.fan_group, self.default_fan_value)
+        for dev_id in self.fan_group:
+            self.driver_manager.set_output(dev_id, self.default_fan_value)
         sleep(5)
         while self.updater_running:
             # update sensor data
@@ -129,7 +130,8 @@ class ThermalManager(object):
                 self.driver_manager.lock_group(self.driver_group, "thermal_manager")
 
             self.thermal_flag = thermal_flag
-            self.driver_manager.set_group(self.fan_group, fan_dc)
+            for dev_id in self.fan_group:
+                self.driver_manager.set_output(dev_id, fan_dc)
 
             sleep(1)
 

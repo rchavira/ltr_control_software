@@ -43,7 +43,7 @@ test_config = {
 }
 
 hardware_cfg = {
-    "update_interval": 1,
+    "update_interval": 0.1,
     "temp_decimals": 2,
     "devices": {
         "t1": {"device_type": "mcp960x", "i2c_addr": 96},
@@ -76,7 +76,7 @@ def hardware_test():
         from devices.thermo_manager import ThermoManager
 
     except Exception as ex:
-        log.debug("Failure on imports")
+        # log.debug("Failure on imports")
         log.error(ex)
         return False
 
@@ -86,14 +86,14 @@ def hardware_test():
         dio = loader(ControllerDeviceTypes.raspi, **dio_cfg)
         ch_sel = ChipSelector(dio, **ch_sel_cfg)
     except Exception as ex:
-        log.debug("Failure on dependancy init")
+        # log.debug("Failure on dependancy init")
         log.error(ex)
         return False
 
     try:
         tm = ThermoManager(spi=spi_mgr, i2c=i2c_mgr, chip_sel=ch_sel, **hardware_cfg)
     except Exception as ex:
-        log.debug("Failure on init")
+        # log.debug("Failure on init")
         log.error(ex)
         return False
 
@@ -108,7 +108,7 @@ def hardware_test():
         tm.stop_manager()
         tm = None
     except Exception as ex:
-        log.debug("Failure on interface usage")
+        # log.debug("Failure on interface usage")
         log.error(ex)
         return False
     return True

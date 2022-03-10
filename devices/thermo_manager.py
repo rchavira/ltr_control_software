@@ -89,24 +89,23 @@ class ThermoManager(object):
             self.add_device(dev_id, dev_type=device_type, **thermal_config["devices"][dev_id])
 
     def add_device(self, dev_id, dev_type, **cfg):
-        device = loader(dev_type=dev_type, dev_id=dev_id, spi=self.spi, i2c=self.spi, ch_sel=self.chip_sel, **cfg)
+        device = loader(dev_type=dev_type, dev_id=dev_id, spi=self.spi, i2c=self.i2c, ch_sel=self.chip_sel, **cfg)
         d_data = ThermoData()
 
         self.device_data[dev_id] = d_data
         self.devices[dev_id] = device
 
-        log.info(f"Added {dev_type} device {dev_id}.")
+        # log.debug(f"Added {dev_type} device {dev_id}.")
 
     def updater(self):
         while self.updater_running:
             for dev_id in self.devices.keys():
-                log.debug(f"reading data for {dev_id}")
                 self.devices[dev_id].init_device()
                 self.device_data[dev_id].junction_temp = self.devices[dev_id].get_junction_temp()
                 self.device_data[dev_id].internal_temp = self.devices[dev_id].get_internal_temp()
                 self.device_data[dev_id].flag = self.devices[dev_id].get_faults()
                 self.devices[dev_id].close_device()
-
+                # log.debug(f"{dev_id}: {self.get_values(dev_id)}")
             sleep(self.update_interval)
 
     def start_manager(self):
@@ -135,32 +134,3 @@ class ThermoManager(object):
         st += 8 if self.device_data[dev_id].flag_other else 0
 
         return jt, it, ft, st
-
-
-def test():
-
-    """
-    from devices.thermocouples.emulated import gen_up_and_down, gen_values
-
-    gen_up_and_down("test.txt", 15, 65, 1000)
-    gen_up_and_down("test2.txt", 15, 35, 1000)
-    gen_values("test3.txt", 0, 1, 1000, isfloat=False)
-    """
-    from devices.bus_manager import BusManager
-    from devices.spi_interface import SpiInterface
-    i2c_mgr = BusManager()
-    spi_mgr = BusManager()
-    tm = ThermoManager(
-        spi=SpiInterface().spi, i2c=None, spi_blocker=spi_mgr.bus_blocker, i2c_blocker=i2c_mgr.bus_blocker,
-        chip_sel=None, **default_config
-    )
-    tm.start_manager()
-    while True:
-        for dev_id in default_config["devices"].keys():
-            print(f"{dev_id}:{tm.get_values(dev_id)}")
-        try:
-            sleep(1)
-        except KeyboardInterrupt:
-            break
-    tm.stop_manager()
-    tm = None

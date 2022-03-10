@@ -22,6 +22,8 @@ class RaspiSpi(SpiInterface):
 
     def __init__(self, bus_type, **kwargs):
         self.bus = board.SPI()
+        self.bus2 = SPIDevice(self.bus)
+
         self.cs = DigitalInOut(board.D4)
 
     def send_and_receive(self, byte_data, resp_len, read_delay=0.5):

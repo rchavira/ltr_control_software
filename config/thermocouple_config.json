@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "date": "2022.03.09",
+    "update_interval": 0.1,
+    "temp_decimals": 2,
+    "devices": {
+        "t9": {"device_type": "max31855", "cs": 9},
+        "t10": {"device_type": "max31855", "cs": 8},
+        "t1": {"device_type": "mcp960x", "i2c_addr": 96},
+        "t2": {"device_type": "mcp960x", "i2c_addr": 97},
+        "t3": {"device_type": "mcp960x", "i2c_addr": 98},
+        "t4": {"device_type": "mcp960x", "i2c_addr": 99},
+        "t5": {"device_type": "mcp960x", "i2c_addr": 100},
+        "t6": {"device_type": "mcp960x", "i2c_addr": 101},
+        "t7": {"device_type": "mcp960x", "i2c_addr": 102},
+        "t8": {"device_type": "mcp960x", "i2c_addr": 103}
+    }
+}

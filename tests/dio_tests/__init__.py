@@ -31,7 +31,7 @@ def hardware_test():
         from devices.dio_devices import loader
         from system_control import ControllerDeviceTypes
     except Exception as ex:
-        log.debug("Failure on imports")
+        # log.debug("Failure on imports")
         log.error(ex)
         result = False
         return result
@@ -39,7 +39,7 @@ def hardware_test():
     try:
         dio = loader(ControllerDeviceTypes.raspi, **hardware_cfg)
     except Exception as ex:
-        log.debug("Failure on dio init")
+        # log.debug("Failure on dio init")
         log.error(ex)
         result = False
         return result
@@ -56,7 +56,7 @@ def hardware_test():
             log.info(f"Pin {p}: {v}")
             sleep(0.5)
     except Exception as ex:
-        log.debug("Failure on interface usage")
+        # log.debug("Failure on interface usage")
         log.error(ex)
         result = False
         return result

@@ -8,10 +8,7 @@ from tests.fan_tests import test as fan_test
 from tests.driver_tests import test as driver_test
 from tests.thermal_manager_test import test as thermal_manager_test
 
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(message)s"
-    #level=logging.DEBUG, format="%(asctime)s - %(message)s"
-)
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(message)s")
 
 
 def main():
@@ -41,7 +38,7 @@ def main():
         logging.info("Starting Driver Test...")
         result = driver_test()
 
-    result = False
+    result = True
     if result:
         logging.info("Starting Thermo Test...")
         result = thermo_test()
@@ -56,7 +53,7 @@ def main():
         logging.info("Starting Sensors Test...")
         result = sensors_test()
 
-    result = True
+    result = False
     if result:
         logging.info("Starting Thermal Manager Test...")
         result = thermal_manager_test()

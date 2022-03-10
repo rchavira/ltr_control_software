@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 class MAX31855Interface(ThermoInterface):
     chip_select: ChipSelector
-    bus: BusManager
+    bus_mgr: BusManager
 
     def __init__(self, dev_id, bus, ch_sel, **kwargs):
         super().__init__(**kwargs)
@@ -25,27 +25,27 @@ class MAX31855Interface(ThermoInterface):
         self._cs = DigitalInOut(board.D4)
         self.chip_select = ch_sel
         self.device = None  # type: adafruit_max31855.MAX31855
-        self.bus = bus
+        self.bus_mgr = bus
         self.dev_id = dev_id
 
     def init_device(self):
         result = True
-        self.bus.bus_blocker(self.dev_id, True)
+        self.bus_mgr.bus_blocker(self.dev_id, True)
         if self.chip_select is not None:
             self.chip_select.chip_select(self.cs)
         try:
-            self.device = adafruit_max31855.MAX31855(self.bus.bus, self._cs)
+            self.device = adafruit_max31855.MAX31855(self.bus_mgr.bus.bus, self._cs)
         except Exception as ex:
             log.error(ex)
             result = False
         return result
 
     def close_device(self):
-        self.bus.bus_blocker(self.dev_id, False)
+        self.bus_mgr.bus_blocker(self.dev_id, False)
         self.device = None
 
     def get_junction_temp(self):
-        value = nan
+        value = 0.0
         try:
             value = self.device.temperature
         except Exception as ex:

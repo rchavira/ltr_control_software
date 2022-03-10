@@ -15,7 +15,7 @@ logging.getLogger("pymodbus").setLevel(logging.WARNING)
 
 class ModbusServer(object):
     def __init__(self, **kwargs):
-        self.modbus_config = kwargs["modbus_config"]
+        self.modbus_config = kwargs
 
         store = ModbusSlaveContext(
             di=ModbusSequentialDataBlock(
@@ -50,8 +50,8 @@ class ModbusServer(object):
         self.run_time_register = self.modbus_config["system_registers"]["run_time"]
 
         self.info_registers = self.modbus_config["info_registers"]
-        self.sensor_info = kwargs["sensor_inputs"]
-        self.version_register = self.info_registers["version"]
+        self.sensor_info = kwargs["sensor_registers"]
+        self.version_register = self.info_registers["version"]["address"]
 
         self.version = 4
 
@@ -110,6 +110,9 @@ class ModbusServer(object):
         )
         return values[0]
 
+    def set_power_target(self, pt):
+        self.update_holding_register(self.power_reg, [pt])
+
     def update_sensor_info(self, sdict):
         for si in sdict.keys():
             try:
@@ -143,7 +146,7 @@ class ModbusServer(object):
                 for a in self.sensor_info[s].keys():
                     if a in self.info_registers[s].keys():
                         d_str = f"{self.sensor_info[s][a]}"
-                        d_filter = filter(str.isdigit, data)
+                        d_filter = filter(str.isdigit, d_str)
                         data = int("".join(d_filter))
                         self.update_input_register(self.info_registers[s][a], [data])
 

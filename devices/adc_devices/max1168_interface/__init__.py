@@ -29,13 +29,13 @@ default_config = {
 
 
 class Max1168Interface(AdcInterface):
-    bus: BusManager
+    bus_mgr: BusManager
     chip_select: ChipSelector
 
     def __init__(self, dev_name, bus, ch_sel, **kwargs):
         super().__init__()
         self.chip_select = ch_sel
-        self.bus = bus
+        self.bus_mgr = bus
         self.resolution = 65535
         self.cs = kwargs["chip_select"]
         for dev_id in kwargs["devices"].keys():
@@ -49,18 +49,18 @@ class Max1168Interface(AdcInterface):
 
     def read_channel(self, dev_id):
 
-        self.bus.bus_blocker(dev_id, True)
+        self.bus_mgr.bus_blocker(dev_id, True)
 
         self.chip_select.chip_select(self.cs)
 
         cmd = struct.pack("<H", (int(self.channels[dev_id].channel) << 5 | 3 << 3))
-        response = self.bus.send_and_receive(cmd, 3)
+        response = self.bus_mgr.bus.send_and_receive(cmd, 3)
         raw, _ = struct.unpack("<HB", response)
         self.channels[dev_id].set_value(raw)
 
         self.chip_select.reset()
 
-        self.bus.bus_blocker(dev_id, False)
+        self.bus_mgr.bus_blocker(dev_id, False)
 
         return self.channels[dev_id].value
 

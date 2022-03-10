@@ -29,12 +29,12 @@ class AdcInfo(object):
 
 class AdcInterface(object):
     channels: Dict[Any, AdcInfo]
-    bus: BusManager
+    bus_mgr: BusManager
 
     def __init__(self):
         self.channels = {}
         self.resolution = 0
-        self.bus = None
+        self.bus_mgr = None
         self.chip_select = None
         self.cs = 0
 

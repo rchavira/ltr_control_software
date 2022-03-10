@@ -30,6 +30,12 @@ class FanSpeedInterface(object):
     def set_fan_speed(self, channel, fan_speed):
         pass
 
+    def start_updater(self):
+        pass
+
+    def stop_updater(self):
+        pass
+
 
 def loader(dev_type, **cfg):
     device = None

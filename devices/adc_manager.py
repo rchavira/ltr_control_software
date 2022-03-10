@@ -41,12 +41,12 @@ class AdcManager(object):
         self.devices = {}
         self.data = {}
         self.spi = spi
-        self.i2c = i2c
+        self.i2c = None
         self.ch_sel = ch_sel
         self.update_thread = None
         self.update_interval = kwargs["update_interval"]
         self.updater_running = False
-        log.debug(f"Adding {len(kwargs['devices'])} device")
+        # log.debug(f"Adding {len(kwargs['devices'])} device")
         for dev in kwargs["devices"].keys():
             device_type = AdcDeviceTypes[kwargs['devices'][dev]['device_type']]
             self.add_device(dev, dev_type=device_type, **kwargs['devices'][dev])
@@ -63,6 +63,7 @@ class AdcManager(object):
             for dev_id in self.data.keys():
                 dev = self.data[dev_id].device_id
                 self.devices[dev].read_channel(dev_id)
+                log.debug(f"{dev_id}: {self.get_values(dev_id)}")
             sleep(self.update_interval)
 
     def start_manager(self):

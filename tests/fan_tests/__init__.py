@@ -18,14 +18,14 @@ def test():
         from system_control import ControllerDeviceTypes
         from devices.fan_controller_devices import FanDevType, loader as fan_loader
     except Exception as ex:
-        log.debug("Error during imports")
+        # log.debug("Error during imports")
         log.error(ex)
         return False
 
     try:
         fans = fan_loader(FanDevType.fan_control_board, **hardware_cfg)
     except Exception as ex:
-        log.debug("Error during init")
+        # log.debug("Error during init")
         log.error(ex)
         return False
 
@@ -41,7 +41,7 @@ def test():
         fans.stop_updater()
         fans = None
     except Exception as ex:
-        log.debug("Error during interface")
+        # log.debug("Error during interface")
         log.error(ex)
         return False
     return True
