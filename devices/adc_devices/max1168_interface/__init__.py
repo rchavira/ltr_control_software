@@ -52,9 +52,13 @@ class Max1168Interface(AdcInterface):
         if self.bus_mgr.bus_blocker(dev_id, True):
             self.chip_select.chip_select(self.cs)
 
-            cmd = struct.pack("<H", (int(self.channels[dev_id].channel) << 5 | 3 << 3))
+            # cmd = struct.pack("<H", (int(self.channels[dev_id].channel) << 5 | 3 << 3))
+            chdat = (int(self.channels[dev_id].channel) << 5 | 3 << 3)
+            cmd = struct.pack("<B", chdat)
+            # log.debug(f"{dev_id} :> {chdat}")
             response = self.bus_mgr.send_and_receive(cmd, 3)
-            raw, _ = struct.unpack("<HB", response)
+            # log.debug(f"{dev_id} :< {struct.unpack('>HB', response)}")
+            raw, _ = struct.unpack(">HB", response)
             self.channels[dev_id].set_value(raw)
 
             self.chip_select.reset()

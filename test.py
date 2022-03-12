@@ -78,17 +78,22 @@ if __name__ == '__main__':
         loglevel = logging.CRITICAL
     logging.basicConfig(level=loglevel, format="%(asctime)s - %(message)s")
 
+    logging.info(args.test)
+    dio = adc = fans = thermo = sensors = thermal = False
     if args.test == "ALL":
-        main(dio=True, adc=True, fans=True, thermo=True, sensors=True, thermal=True)
-    elif args.test == "DIO":
-        main(dio=True)
-    elif args.test == "ADC":
-        main(adc=True)
-    elif args.test == "FANS":
-        main(fans=True)
-    elif args.test == "TC":
-        main(thermo=True)
-    elif args.test == "SENSORS":
-        main(sensors=True)
-    elif args.test == "THERMAL":
-        main(thermal=True)
+        dio = adc = fans = thermo = sensors = thermal=True
+    else:
+        if "DIO" in args.test:
+            dio = True
+        elif args.test == "ADC":
+            adc = True
+        elif args.test == "FANS":
+            fans = True
+        elif args.test == "TC":
+            thermo = True
+        elif args.test == "SENSORS":
+            sensors = True
+        elif args.test == "THERMAL":
+            thermal = True
+
+    main(dio=dio, adc=adc, fans=fans, thermo=thermo, sensors=sensors, thermal=thermal)

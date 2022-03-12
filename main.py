@@ -16,13 +16,14 @@ if __name__ == "__main__":
     parser.add_argument('--service', help='Run Controller as a Service', action="store_true")
     parser.add_argument('--emulate', help='Emulate all hardware on the system.', action="store_true")
     parser.add_argument('--loglevel', default=1, help='Log level [DEBUG (1-5) CRITICAL]')
+    parser.add_argument('--config', default="system_config.json", help='The name of the config file to use')
     args = parser.parse_args()
 
     run_as_service = args.service
     if args.emulate:
         config_file = "emulate_config.json"
     else:
-        config_file = "system_config.json"
+        config_file = args.config
 
     loglevel = logging.DEBUG
 

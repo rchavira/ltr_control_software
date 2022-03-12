@@ -3,10 +3,10 @@
     "date": "2022.03.09",
     "fan_group": ["fan1", "fan2"],
     "driver_group": ["ttv1", "ttv2", "ttv3", "ttv4"],
-    "inlet_group": ["t9", "t10"],
+    "inlet_group": ["t9"],
     "outlet_group": ["tFCB"],
-    "monitor_group": ["t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8"],
-    "monitor_threshold_temp": 75,
+    "monitor_group": ["t1"],
+    "monitor_threshold_temp": 45,
     "outlet_threshold_temp": 45,
     "inlet_threshold_temp": 45,
     "fan_table": [

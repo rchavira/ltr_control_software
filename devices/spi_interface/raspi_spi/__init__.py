@@ -27,9 +27,9 @@ class RaspiSpi(SpiInterface):
         self.cs = DigitalInOut(board.D4)
 
     def send_and_receive(self, byte_data, resp_len, read_delay=0.5):
-        with SPIDevice(self.bus, self.cs) as spi:
+        with SPIDevice(self.bus, self.cs, baudrate=4000000) as spi:
             spi.write(byte_data)
-            sleep(read_delay)
+            # sleep(read_delay)
 
             resp = bytearray(resp_len)
 

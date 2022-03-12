@@ -135,8 +135,20 @@ class SystemManager(object):
             shutdown = self.mb.get_shutdown_cmd()
 
             if shutdown != 0:
+                self.mb.update_system_flags(
+                    running=(run_ttv == 1),
+                    system_stop=(shutdown != 0),
+                    leak_detect=self.sm.leak_flag,
+                    thermal_fault=self.tm.thermal_flag,
+                    sensor_fault=self.sm.sensor_flag,
+                    current_power=current_power,
+                    on_time=time_at_power
+                )
                 self.stop_system()
                 break
+
+            if self.sm.leak_flag or self.tm.thermal_flag:
+                run_ttv = 0
 
             # convert power target to dc %
             pt_dc = int((power_target / self.max_power_target) * 100)

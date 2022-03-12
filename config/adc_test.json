@@ -1,0 +1,12 @@
+{
+    "update_interval": 0.1,
+    "devices": {
+        "adc2": {
+            "device_type": "max1168",
+            "chip_select": 11,
+            "devices": {
+                "l1": {"channel": 3, "min_val": 0, "max_val": 65535}
+            }
+        }
+    }
+}

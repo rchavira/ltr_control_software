@@ -107,8 +107,8 @@ def test():
 
 def hardware_test():
     log = logging.getLogger(__name__)
-    from tests.dio_tests import hardware_cfg as dio_cfg
-    from tests.chip_select_test import hardware_cfg as ch_sel_cfg
+    from config import read_config
+
     try:
         from system_control import ControllerDeviceTypes
         from devices.bus_manager import BusManager, BusType
@@ -117,6 +117,15 @@ def hardware_test():
         from devices.adc_manager import AdcManager
     except Exception as ex:
         log.info("Failure on import")
+        log.error(ex)
+        return False
+
+    try:
+        dio_cfg = read_config("dio_config.json")
+        ch_sel_cfg = read_config("chip_select_config.json")
+        adc_conf = read_config("adc_test.json")
+    except Exception as ex:
+        log.info("Failure on config load...")
         log.error(ex)
         return False
 
@@ -130,7 +139,7 @@ def hardware_test():
         spi_mgr = BusManager(BusType.spi, ControllerDeviceTypes.raspi, **cfg)
         i2c_mgr = BusManager(BusType.i2c, ControllerDeviceTypes.emulated, **cfg)
 
-        am = AdcManager(spi=spi_mgr, i2c=i2c_mgr, ch_sel=cs, **hardware_cfg)
+        am = AdcManager(spi=spi_mgr, i2c=i2c_mgr, ch_sel=cs, **adc_conf)
     except Exception as ex:
         log.info("Failure on init")
         log.error(ex)
@@ -140,10 +149,10 @@ def hardware_test():
     try:
         am.start_manager()
 
-        for _ in range(15):
-            for dev_id in am.data.keys():
-                log.debug(f"{am.get_values(dev_id)}")
-            sleep(1)
+        for _ in range(10):
+            # for dev_id in am.data.keys():
+            #     log.debug(f"{dev_id}: {am.get_values(dev_id)}")
+            sleep(5)
 
         log.info("Stopping adc manager...")
         am.stop_manager()

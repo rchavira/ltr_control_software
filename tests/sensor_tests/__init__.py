@@ -20,11 +20,7 @@ spi_cfg = {}
 def test():
     log = logging.getLogger(__name__)
 
-    from tests.adc_test import hardware_cfg as adc_cfg
-    from tests.dio_tests import hardware_cfg as dio_cfg
-    from tests.chip_select_test import hardware_cfg as ch_sel_cfg
-    from tests.thermo_tests import hardware_cfg as thermo_cfg
-    from tests.fan_tests import hardware_cfg as fans_cfg
+    from config import read_config
 
     try:
         from system_control import ControllerDeviceTypes
@@ -36,9 +32,22 @@ def test():
         from devices.thermo_manager import ThermoManager
         from devices.fan_controller_devices import FanDevType, loader as fan_loader
     except Exception as ex:
-        # log.debug("Error during imports")
+        log.debug("Error during imports")
         log.error(ex)
         return False
+
+    try:
+        adc_cfg = read_config("adc_config.json")
+        dio_cfg = read_config("dio_config.json")
+        ch_sel_cfg = read_config("chip_select_config.json")
+        thermo_cfg = read_config("thermocouple_emulate.json")
+        fans_cfg = read_config("fan_speed_device_config.json")
+        sensor_cfg = read_config("sensor_manager.json")
+    except Exception as ex:
+        log.debug("Error during config load")
+        log.error(ex)
+        return False
+
 
     try:
         spi_mgr = BusManager(BusType.spi, ControllerDeviceTypes.raspi, **spi_cfg)
@@ -52,7 +61,7 @@ def test():
 
         fans = fan_loader(FanDevType.fan_control_board, **fans_cfg)
 
-        sm = SensorManager(spi_mgr, i2c_mgr, ch_sel, dio, adc, thermo, fans, **hardware_config)
+        sm = SensorManager(spi_mgr, i2c_mgr, ch_sel, dio, adc, thermo, fans, **sensor_cfg)
     except Exception as ex:
         # log.debug("Error during init")
         log.error(ex)
@@ -67,9 +76,9 @@ def test():
         sleep(5)
         log.info("reading sensors...")
         for _ in range(8):
-            for dev_id in sm.sensor_data.keys():
-                log.debug(f"{dev_id}: {sm.sensor_data[dev_id]}")
-            sleep(1)
+            # for dev_id in sm.sensor_data.keys():
+            #     log.debug(f"{dev_id}: {sm.sensor_data[dev_id]}")
+            sleep(5)
 
         sm.stop_manager()
         sm = None
