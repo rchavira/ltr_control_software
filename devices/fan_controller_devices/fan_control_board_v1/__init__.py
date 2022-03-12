@@ -75,7 +75,7 @@ class FCBv1Interface(FanSpeedInterface):
                     self.process_data(data.decode("utf-8"))
 
     def process_data(self, data):
-        log.debug(f"FCB: {data}")
+        # log.debug(f"FCB: {data}")
         if len(data.split(':')) == 2:
             if "Channel[" in data:
                 channel = int(data.split("[")[1].split("]")[0])

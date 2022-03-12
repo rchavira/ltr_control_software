@@ -125,9 +125,10 @@ class ThermalManager(object):
                     pass
                 elif self.fan_run_mode == FanRunMode.temp_control:
                     pass
-                self.driver_manager.unlock_group(self.driver_group, "thermal_manager")
+                # self.driver_manager.unlock_group(self.driver_group, "thermal_manager")
             else:
-                self.driver_manager.lock_group(self.driver_group, "thermal_manager")
+                # self.driver_manager.lock_group(self.driver_group, "thermal_manager")
+                pass
 
             self.thermal_flag = thermal_flag
             for dev_id in self.fan_group:

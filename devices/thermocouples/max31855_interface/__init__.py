@@ -50,6 +50,7 @@ class MAX31855Interface(ThermoInterface):
         try:
             value = self.device.temperature
         except Exception as ex:
+            log.error(ex)
             if "thermocouple not connected" in ex.__str__():
                 self.flag = True
                 self.flag_no_tc = True

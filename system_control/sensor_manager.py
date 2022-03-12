@@ -159,8 +159,8 @@ class SensorManager(object):
 
             leak_flag = False
 
-            self.leak_data.add_data_point(self.sensor_data)
-            leak_value = self.leak_data.value
+            # self.leak_data.add_data_point(self.sensor_data)
+            leak_value = self.sensor_data[self.internal_leak_dev_id]
 
             if self.internal_leak_dev_id in self.sensor_data.keys():
                 if self.leak_detection_mode == LeakDetectionModes.digital:
@@ -175,11 +175,15 @@ class SensorManager(object):
                 elif self.leak_detection_mode == LeakDetectionModes.range:
                     if self.leak_data.get_range() > self.leak_detection_value:
                         leak_flag = True
+            log.debug(f"{self.internal_leak_dev_id}: {self.sensor_data[self.internal_leak_dev_id]}")
+            log.debug(f"Leak flag: {leak_flag} leak_value:{leak_value} threshold:{self.leak_detection_value}")
 
             if leak_flag:
                 self.dio.write_digital(self.external_leak_pin, self.leak_report_active)
             else:
                 self.dio.write_digital(self.external_leak_pin, self.leak_report_inactive)
+
+            self.leak_flag = leak_flag
 
             sleep(0.5)
 
