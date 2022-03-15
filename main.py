@@ -1,6 +1,6 @@
+import argparse
 import logging
 import sys
-import argparse
 from time import sleep
 
 from system_control.system_manager import SystemManager
@@ -9,14 +9,24 @@ from system_control.system_manager import SystemManager
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="ltr_control",
-        usage='%(prog)s [options]',
+        usage="%(prog)s [options]",
         description="LTR Control Software.  A modbus TCP interface to LTR Chassis hardware.",
-        epilog='Meta Copyright 2022'
+        epilog="Meta Copyright 2022",
     )
-    parser.add_argument('--service', help='Run Controller as a Service', action="store_true")
-    parser.add_argument('--emulate', help='Emulate all hardware on the system.', action="store_true")
-    parser.add_argument('--loglevel', default=1, help='Log level [DEBUG (1-5) CRITICAL]')
-    parser.add_argument('--config', default="system_config.json", help='The name of the config file to use')
+    parser.add_argument(
+        "--service", help="Run Controller as a Service", action="store_true"
+    )
+    parser.add_argument(
+        "--emulate", help="Emulate all hardware on the system.", action="store_true"
+    )
+    parser.add_argument(
+        "--loglevel", default=1, help="Log level [DEBUG (1-5) CRITICAL]"
+    )
+    parser.add_argument(
+        "--config",
+        default="system_config.json",
+        help="The name of the config file to use",
+    )
     args = parser.parse_args()
 
     run_as_service = args.service
@@ -41,7 +51,9 @@ if __name__ == "__main__":
         loglevel = logging.CRITICAL
 
     if run_as_service:
-        logging.basicConfig(filename="system.log", level=loglevel, format="%(asctime)s - %(message)s")
+        logging.basicConfig(
+            filename="system.log", level=loglevel, format="%(asctime)s - %(message)s"
+        )
     else:
         logging.basicConfig(level=loglevel, format="%(asctime)s - %(message)s")
 

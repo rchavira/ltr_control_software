@@ -1,9 +1,4 @@
 import logging
-import sys
-
-from enum import Enum
-from threading import Thread
-from time import sleep, time
 
 from devices.dio_devices import DioInterface
 from devices.mux_devices import MuxDeviceInterface, MuxDeviceTypes, loader
@@ -19,8 +14,8 @@ default_config = {
         "pinC": 22,
         "pinD": 5,
         "strobe": 23,
-        "strobe_delay": 0.5
-    }
+        "strobe_delay": 0.5,
+    },
 }
 
 

@@ -1,16 +1,16 @@
 import logging
-
-from devices.fan_controller_devices import FanSpeedInterface
-from devices.emulation_helpers import get_next_int, get_next_float
 from threading import Thread
 from time import sleep
+
+from devices.emulation_helpers import get_next_int, get_next_float
+from devices.fan_controller_devices import FanSpeedInterface
 
 log = logging.getLogger(__name__)
 
 default_config = {
     "channel_count": 8,
     "values_file": "fan_speed_values.txt",
-    "temp_file": "test.txt"
+    "temp_file": "test.txt",
 }
 
 

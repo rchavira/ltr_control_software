@@ -1,6 +1,5 @@
-import logging
 import json
-
+import logging
 from os import path
 
 

@@ -10,17 +10,9 @@ default_config = {
     "resolution": 1024,
     "chip_select": 0,
     "devices": {
-        "t11": {
-            "channel": 0,
-            "min_val": 0,
-            "max_val": 150
-        },
-        "t12": {
-            "channel": 1,
-            "min_val": 0,
-            "max_val": 150
-        }
-    }
+        "t11": {"channel": 0, "min_val": 0, "max_val": 150},
+        "t12": {"channel": 1, "min_val": 0, "max_val": 150},
+    },
 }
 
 
@@ -37,7 +29,7 @@ class EmulatedAdc(AdcInterface):
                 dev_name,
                 kwargs["devices"][dev_id]["min_val"],
                 kwargs["devices"][dev_id]["max_val"],
-                self.resolution
+                self.resolution,
             )
 
     def read_channel(self, dev_id):

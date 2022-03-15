@@ -1,6 +1,6 @@
 import logging
-
 from time import sleep
+
 from devices.mux_devices import MuxDeviceInterface
 
 log = logging.getLogger(__name__)
@@ -11,7 +11,7 @@ default_configuration = {
     "pinC": 22,
     "pinD": 5,
     "strobe": 23,
-    "strobe_delay": 0.1
+    "strobe_delay": 0.1,
 }
 
 
@@ -43,7 +43,3 @@ class CD4515Interface(MuxDeviceInterface):
 
         self.dio.write_digital(self.strobe, 0)
         sleep(self.strobe_delay)
-
-
-
-

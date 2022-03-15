@@ -5,19 +5,12 @@ PCA9685 PWM Driver Interface
 import logging
 
 from adafruit_pca9685 import PCA9685
-from devices.pwm_devices import PwmInterface, DriverInfo
 from devices.bus_manager import BusManager
+from devices.pwm_devices import PwmInterface, DriverInfo
 
 log = logging.getLogger(__name__)
 
-default_config = {
-    "drivers": {
-        "ttv1": {
-            "channel": 0,
-            "offset": 0
-        }
-    }
-}
+default_config = {"drivers": {"ttv1": {"channel": 0, "offset": 0}}}
 
 
 class PCA9685Interface(PwmInterface):
@@ -33,7 +26,7 @@ class PCA9685Interface(PwmInterface):
             self.drivers[dev_id] = DriverInfo(
                 kwargs["drivers"][dev_id]["channel"],
                 kwargs["drivers"][dev_id]["offset"],
-                65535
+                65535,
             )
 
     def init_device(self):
@@ -55,4 +48,6 @@ class PCA9685Interface(PwmInterface):
     def set_duty_cycle(self, dev_id, dc):
         self.drivers[dev_id].set_dc(dc)
         if self.device is not None:
-            self.device.channels[self.drivers[dev_id].channel].duty_cycle = self.drivers[dev_id].pwm_value
+            self.device.channels[
+                self.drivers[dev_id].channel
+            ].duty_cycle = self.drivers[dev_id].pwm_value

@@ -2,8 +2,8 @@
 Main interface for thermocouples
 """
 import sys
-
 from enum import Enum
+
 from devices.bus_manager import BusManager
 
 
@@ -69,19 +69,19 @@ class ThermoInterface(object):
 def loader(dev_type, dev_id, spi, i2c, ch_sel, **cfg):
     device = None
     if dev_type == ThermoTypes.emulated:
-        if 'EmulatedThermo' not in sys.modules:
+        if "EmulatedThermo" not in sys.modules:
             from devices.thermocouples.emulated import EmulatedThermo
         device = EmulatedThermo(**cfg)
     elif dev_type == ThermoTypes.max31855:
-        if 'MAX31855Interface' not in sys.modules:
+        if "MAX31855Interface" not in sys.modules:
             from devices.thermocouples.max31855_interface import MAX31855Interface
         device = MAX31855Interface(dev_id, spi, ch_sel, **cfg)
     elif dev_type == ThermoTypes.max31856:
-        if 'MAX31856Interface' not in sys.modules:
+        if "MAX31856Interface" not in sys.modules:
             from devices.thermocouples.max31856_interface import MAX31856Interface
         device = MAX31856Interface(dev_id, spi, ch_sel, **cfg)
     elif dev_type == ThermoTypes.mcp960x:
-        if 'MCP960xInterface' not in sys.modules:
+        if "MCP960xInterface" not in sys.modules:
             from devices.thermocouples.mcp960x_interface import MCP960xInterface
         device = MCP960xInterface(dev_id, i2c, **cfg)
 

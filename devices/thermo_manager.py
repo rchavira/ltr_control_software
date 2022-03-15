@@ -3,14 +3,12 @@ Thermocouple manager
 """
 
 import logging
-import sys
-
-from enum import Enum
 from threading import Thread
 from time import sleep
 from typing import Dict, Any
-from devices.thermocouples import ThermoInterface, ThermoTypes, loader
+
 from devices.bus_manager import BusManager
+from devices.thermocouples import ThermoInterface, ThermoTypes, loader
 
 log = logging.getLogger(__name__)
 
@@ -24,19 +22,18 @@ default_config = {
             "config": {
                 "junction_values_file": "test.txt",
                 "internal_values_file": "test2.txt",
-                "flag_values_file": "test3.txt"
-            }
+                "flag_values_file": "test3.txt",
+            },
         },
         "t2": {
             "device_type": "emulated",
             "config": {
                 "junction_values_file": "test.txt",
                 "internal_values_file": "test2.txt",
-                "flag_values_file": "test3.txt"
-            }
-        }
-
-    }
+                "flag_values_file": "test3.txt",
+            },
+        },
+    },
 }
 
 
@@ -86,10 +83,19 @@ class ThermoManager(object):
 
         for dev_id in thermal_config["devices"].keys():
             device_type = ThermoTypes[thermal_config["devices"][dev_id]["device_type"]]
-            self.add_device(dev_id, dev_type=device_type, **thermal_config["devices"][dev_id])
+            self.add_device(
+                dev_id, dev_type=device_type, **thermal_config["devices"][dev_id]
+            )
 
     def add_device(self, dev_id, dev_type, **cfg):
-        device = loader(dev_type=dev_type, dev_id=dev_id, spi=self.spi, i2c=self.i2c, ch_sel=self.chip_sel, **cfg)
+        device = loader(
+            dev_type=dev_type,
+            dev_id=dev_id,
+            spi=self.spi,
+            i2c=self.i2c,
+            ch_sel=self.chip_sel,
+            **cfg,
+        )
         d_data = ThermoData()
 
         self.device_data[dev_id] = d_data
@@ -101,8 +107,12 @@ class ThermoManager(object):
         while self.updater_running:
             for dev_id in self.devices.keys():
                 if self.devices[dev_id].init_device():
-                    self.device_data[dev_id].junction_temp = self.devices[dev_id].get_junction_temp()
-                    self.device_data[dev_id].internal_temp = self.devices[dev_id].get_internal_temp()
+                    self.device_data[dev_id].junction_temp = self.devices[
+                        dev_id
+                    ].get_junction_temp()
+                    self.device_data[dev_id].internal_temp = self.devices[
+                        dev_id
+                    ].get_internal_temp()
                     self.device_data[dev_id].flag = self.devices[dev_id].get_faults()
                     self.devices[dev_id].close_device()
                 # log.debug(f"{dev_id}: {self.get_values(dev_id)}")

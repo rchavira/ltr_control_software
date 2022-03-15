@@ -4,15 +4,8 @@ from devices.pwm_devices import PwmInterface, DriverInfo
 
 log = logging.getLogger(__name__)
 
-default_config = {
-    "drivers": {
-        "ttv1": {
-            "channel": 0,
-            "offset": 0,
-            "resolution": 65535
-        }
-    }
-}
+default_config = {"drivers": {"ttv1": {"channel": 0, "offset": 0, "resolution": 65535}}}
+
 
 class EmulatedPwm(PwmInterface):
     def __init__(self, dev_name, bus, **kwargs):

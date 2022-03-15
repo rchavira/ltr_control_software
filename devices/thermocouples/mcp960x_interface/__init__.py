@@ -2,9 +2,10 @@
 Interface for MCP9600 and MCP9601 Thermocouple Amplifier
 """
 import logging
+
 import mcp9600
-from devices.thermocouples import ThermoInterface
 from devices.bus_manager import BusManager
+from devices.thermocouples import ThermoInterface
 
 
 log = logging.getLogger(__name__)

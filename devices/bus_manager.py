@@ -4,12 +4,11 @@ This will just manage the bus so that one device is
 being used at a time.
 """
 import logging
-
 from time import sleep
 
+from devices.communication import BusInterface, BusType
 from devices.i2c_interface import loader as i2c_loader
 from devices.spi_interface import loader as spi_loader
-from devices.communication import BusInterface, BusType
 
 log = logging.getLogger(__name__)
 
@@ -63,5 +62,3 @@ class BusManager(object):
             self.blocker = ""
             self.blocked = False
             return True
-
-

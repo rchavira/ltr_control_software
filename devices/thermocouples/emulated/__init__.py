@@ -6,9 +6,10 @@ from thermocouples.emulated import EmulatedThermo, gen_values, gen_up_and_down, 
 
 """
 
-from devices.thermocouples import ThermoInterface
-from devices.emulation_helpers import get_next_float, get_next_int
 import logging
+
+from devices.emulation_helpers import get_next_float, get_next_int
+from devices.thermocouples import ThermoInterface
 
 
 log = logging.getLogger(__name__)
@@ -16,7 +17,7 @@ log = logging.getLogger(__name__)
 default_config = {
     "junction_values_file": "test.txt",
     "internal_values_file": "test2.txt",
-    "flag_values_file": "test3.txt"
+    "flag_values_file": "test3.txt",
 }
 
 
@@ -34,6 +35,6 @@ class EmulatedThermo(ThermoInterface):
 
     def get_faults(self):
         self.flag = False
-        self.flag_shorted_gnd = (get_next_int(self.config["flag_values_file"]) == 1)
-        self.flag_no_tc = (get_next_int(self.config["flag_values_file"]) == 1)
+        self.flag_shorted_gnd = get_next_int(self.config["flag_values_file"]) == 1
+        self.flag_no_tc = get_next_int(self.config["flag_values_file"]) == 1
         self.flag = self.flag_shorted_gnd or self.flag_no_tc

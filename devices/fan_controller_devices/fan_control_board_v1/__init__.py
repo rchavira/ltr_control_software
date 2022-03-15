@@ -1,18 +1,18 @@
 import logging
-
-from serial import Serial
-from devices.fan_controller_devices import FanSpeedInterface
 from threading import Thread
 from time import sleep
+
+from devices.fan_controller_devices import FanSpeedInterface
+from serial import Serial
 
 
 log = logging.getLogger(__name__)
 
 default_config = {
-    "port" : "/dev/ttyusb0",
+    "port": "/dev/ttyusb0",
     "baudrate": 115200,
     "timeout": 0.5,
-    "channel_count": 8
+    "channel_count": 8,
 }
 
 
@@ -76,12 +76,10 @@ class FCBv1Interface(FanSpeedInterface):
 
     def process_data(self, data):
         # log.debug(f"FCB: {data}")
-        if len(data.split(':')) == 2:
+        if len(data.split(":")) == 2:
             if "Channel[" in data:
                 channel = int(data.split("[")[1].split("]")[0])
                 if "]_rpm:" in data:
                     self.channels[channel] = int(data.split(":")[1])
             elif "Temperature:" in data:
                 self.temperature = float(data.split(":")[1])
-
-

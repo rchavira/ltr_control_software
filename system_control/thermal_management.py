@@ -1,18 +1,10 @@
 import logging
-import sys
-
 from enum import Enum
 from threading import Thread
 from time import sleep
 
-from devices.fan_controller_devices import FanDevType, FanSpeedInterface, loader as fan_loader
-
-from system_control.sensor_aggregator import SensorAggregator
-
 from devices.driver_manager import DriverManager
-from system_control.sensor_manager import SensorManager
-
-from system_control import ControllerDeviceTypes
+from system_control.sensor_aggregator import SensorAggregator
 from system_control.sensor_manager import SensorManager
 
 log = logging.getLogger(__name__)
@@ -27,14 +19,14 @@ default_config = {
     "outlet_threshold_temp": 45,
     "inlet_threshold_temp": 45,
     "fan_table": [
-            (45, 60),
-            (44, 45),
-            (42, 30),
-            (40, 20),
+        (45, 60),
+        (44, 45),
+        (42, 30),
+        (40, 20),
     ],
     "default_fan_value": 70,
     "sample_size": 10,
-    "fan_run_mode": "fan_table"
+    "fan_run_mode": "fan_table",
 }
 
 
@@ -60,9 +52,15 @@ class ThermalManager(object):
         self.update_thread = None
         self.fan_group = kwargs["fan_group"]
         self.driver_group = kwargs["driver_group"]
-        self.inlet_group = SensorAggregator(kwargs["inlet_group"], kwargs["sample_size"])
-        self.outlet_group = SensorAggregator(kwargs["outlet_group"], kwargs["sample_size"])
-        self.monitor_group = SensorAggregator(kwargs["monitor_group"], kwargs["sample_size"])
+        self.inlet_group = SensorAggregator(
+            kwargs["inlet_group"], kwargs["sample_size"]
+        )
+        self.outlet_group = SensorAggregator(
+            kwargs["outlet_group"], kwargs["sample_size"]
+        )
+        self.monitor_group = SensorAggregator(
+            kwargs["monitor_group"], kwargs["sample_size"]
+        )
         self.default_fan_value = kwargs["default_fan_value"]
         self.inlet_threshold_temp = kwargs["inlet_threshold_temp"]
         self.outlet_threshold_temp = kwargs["outlet_threshold_temp"]
@@ -139,6 +137,3 @@ class ThermalManager(object):
         log.info("Setting low fan value")
         for dev_id in self.fan_group:
             self.driver_manager.set_output(dev_id, 10)
-
-
-

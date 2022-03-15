@@ -3,22 +3,22 @@ Interface for all MAX31855 thermocouple amplifiers
 """
 
 import logging
-import board
-import adafruit_max3186
 from math import nan
 
+import adafruit_max31856
+import board
 import digitalio
-from digitalio import DigitalInOut
-from devices.thermocouples import ThermoInterface
-from devices.chip_select import ChipSelector
 from devices.bus_manager import BusManager
+from devices.chip_select import ChipSelector
+from devices.thermocouples import ThermoInterface
+from digitalio import DigitalInOut
 
 log = logging.getLogger(__name__)
 
 
 class MAX31856Interface(ThermoInterface):
     chip_select: ChipSelector
-    device: adafruit_max3186.MAX31855
+    device: adafruit_max31856.MAX31856
     bus_mgr: BusManager
 
     def __init__(self, dev_id, spi, ch_sel, **kwargs):
@@ -27,7 +27,7 @@ class MAX31856Interface(ThermoInterface):
         self._cs = DigitalInOut(board.D4)
         self._cs.direction = digitalio.Direction.OUTPUT
         self.chip_select = ch_sel
-        self.device = None  # type: adafruit_max31855.MAX31855
+        self.device = None
         self.bus_mgr = spi
         self.dev_id = dev_id
 
@@ -39,7 +39,9 @@ class MAX31856Interface(ThermoInterface):
             if self.chip_select is not None:
                 self.chip_select.chip_select(self.cs)
             try:
-                self.device = adafruit_max31856.MAX31856(self.bus_mgr.get_bus(), self._cs)
+                self.device = adafruit_max31856.MAX31856(
+                    self.bus_mgr.get_bus(), self._cs
+                )
             except Exception as ex:
                 log.error(ex)
                 result = False
@@ -79,5 +81,10 @@ class MAX31856Interface(ThermoInterface):
             self.flag_shorted_vcc = faults["tc_high"]
             self.flag_shorted_gnd = faults["tc_low"]
             self.flag_other = faults["voltage"]
-            self.flag = self.flag_other or self.flag_no_tc or self.flag_shorted_gnd or self.flag_shorted_vcc
+            self.flag = (
+                self.flag_other
+                or self.flag_no_tc
+                or self.flag_shorted_gnd
+                or self.flag_shorted_vcc
+            )
         return self.flag
