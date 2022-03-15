@@ -1,6 +1,6 @@
 import sys
-from typing import Dict, Any
 from enum import Enum
+from typing import Dict, Any
 
 from devices.bus_manager import BusManager
 
@@ -51,11 +51,11 @@ class AdcInterface(object):
 def loader(dev_type, dev_name, bus, ch_sel, **cfg):
     device = None
     if dev_type == AdcDeviceTypes.emulated:
-        if 'EmulatedAdc' not in sys.modules:
+        if "EmulatedAdc" not in sys.modules:
             from devices.adc_devices.emulated import EmulatedAdc
         device = EmulatedAdc(dev_name, bus, **cfg)
     elif dev_type == AdcDeviceTypes.max1168:
-        if 'Max1168Interface' not in sys.modules:
+        if "Max1168Interface" not in sys.modules:
             from devices.adc_devices.max1168_interface import Max1168Interface
         device = Max1168Interface(dev_name, bus, ch_sel, **cfg)
     return device

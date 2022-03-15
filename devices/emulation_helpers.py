@@ -30,7 +30,11 @@ def gen_ramp_up(values_file, r_min, r_max, qty, isfloat=True):
     l_max = r_min + step
     with open(f_name, "w") as f:
         for _ in range(qty):
-            v = random.uniform(l_max - step, l_max) if isfloat else random.randint(int(l_max - step), int(l_max))
+            v = (
+                random.uniform(l_max - step, l_max)
+                if isfloat
+                else random.randint(int(l_max - step), int(l_max))
+            )
             f.write(f"{v}\n")
             l_max += step
 
@@ -42,7 +46,11 @@ def gen_ramp_down(values_file, r_min, r_max, qty, isfloat=True):
     f_name = get_file_path(values_file)
     with open(f_name, "w") as f:
         for _ in range(qty):
-            v = random.uniform(l_max - step, l_max) if isfloat else random.randint(int(l_max - step), int(l_max))
+            v = (
+                random.uniform(l_max - step, l_max)
+                if isfloat
+                else random.randint(int(l_max - step), int(l_max))
+            )
             f.write(f"{v}\n")
             l_max -= step
 
@@ -54,13 +62,21 @@ def gen_up_and_down(values_file, r_min, r_max, qty, isfloat=True):
     f_name = get_file_path(values_file)
     with open(f_name, "w") as f:
         for _ in range(qty):
-            v = random.uniform(l_max - step, l_max) if isfloat else random.randint(int(l_max - step), int(l_max))
+            v = (
+                random.uniform(l_max - step, l_max)
+                if isfloat
+                else random.randint(int(l_max - step), int(l_max))
+            )
             f.write(f"{v}\n")
             l_max += step
 
         l_max = r_max - step
         for _ in range(qty):
-            v = random.uniform(l_max - step, l_max) if isfloat else random.randint(int(l_max - step), int(l_max))
+            v = (
+                random.uniform(l_max - step, l_max)
+                if isfloat
+                else random.randint(int(l_max - step), int(l_max))
+            )
             f.write(f"{v}\n")
             l_max -= step
 

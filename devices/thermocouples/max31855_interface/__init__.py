@@ -3,14 +3,13 @@ Interface for all MAX31855 thermocouple amplifiers
 """
 
 import logging
-import board
-from math import nan
-from digitalio import DigitalInOut
-from devices.thermocouples import ThermoInterface
-from devices.chip_select import ChipSelector
-from devices.bus_manager import BusManager
 
 import adafruit_max31855
+import board
+from devices.bus_manager import BusManager
+from devices.chip_select import ChipSelector
+from devices.thermocouples import ThermoInterface
+from digitalio import DigitalInOut
 
 log = logging.getLogger(__name__)
 
@@ -35,7 +34,9 @@ class MAX31855Interface(ThermoInterface):
             if self.chip_select is not None:
                 self.chip_select.chip_select(self.cs)
             try:
-                self.device = adafruit_max31855.MAX31855(self.bus_mgr.get_bus(), self._cs)
+                self.device = adafruit_max31855.MAX31855(
+                    self.bus_mgr.get_bus(), self._cs
+                )
             except Exception as ex:
                 log.error(ex)
                 result = False

@@ -1,15 +1,13 @@
 """
 Emulated Digital IO Interface
 """
-from devices.dio_devices import DioInterface
 import logging
+
+from devices.dio_devices import DioInterface
 
 log = logging.getLogger(__name__)
 
-default_config = {
-    "input_pins": [1,2,3,4],
-    "output_pins": [10,24,35]
-}
+default_config = {"input_pins": [1, 2, 3, 4], "output_pins": [10, 24, 35]}
 
 
 class EmulatedIO(DioInterface):

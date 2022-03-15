@@ -1,12 +1,11 @@
 import logging
-
 from threading import Thread
 from time import sleep
 from typing import Dict, Any
 
+from devices.adc_devices import AdcInterface, AdcInfo, AdcDeviceTypes, loader
 from devices.bus_manager import BusManager
 from devices.chip_select import ChipSelector
-from devices.adc_devices import AdcInterface, AdcInfo, AdcDeviceTypes, loader
 
 log = logging.getLogger(__name__)
 
@@ -18,15 +17,9 @@ default_config = {
             "chip_select": 11,
             "input_file": "test.txt",
             "resolution": 1024,
-            "devices": {
-                "leak_1": {
-                    "channel": 3,
-                    "min_val": 0,
-                    "max_val": 1024
-                }
-            }
+            "devices": {"leak_1": {"channel": 3, "min_val": 0, "max_val": 1024}},
         }
-    }
+    },
 }
 
 
@@ -48,8 +41,8 @@ class AdcManager(object):
         self.updater_running = False
         # log.debug(f"Adding {len(kwargs['devices'])} device")
         for dev in kwargs["devices"].keys():
-            device_type = AdcDeviceTypes[kwargs['devices'][dev]['device_type']]
-            self.add_device(dev, dev_type=device_type, **kwargs['devices'][dev])
+            device_type = AdcDeviceTypes[kwargs["devices"][dev]["device_type"]]
+            self.add_device(dev, dev_type=device_type, **kwargs["devices"][dev])
 
     def add_device(self, dev, dev_type, **cfg):
         device = loader(dev_type, dev, self.spi, self.ch_sel, **cfg)
@@ -67,14 +60,14 @@ class AdcManager(object):
             sleep(self.update_interval)
 
     def start_manager(self):
-        log.info(f"Starting ADC Manager update Thread")
+        log.info("Starting ADC Manager update Thread")
         self.update_thread = Thread(target=self.updater)
         self.update_thread.isDaemon = True
         self.updater_running = True
         self.update_thread.start()
 
     def stop_manager(self):
-        log.info(f"Stopping ADC Manager update Thread")
+        log.info("Stopping ADC Manager update Thread")
         self.updater_running = False
         if self.update_thread is not None:
             self.update_thread.join(2)
@@ -90,4 +83,3 @@ class AdcManager(object):
         max_val = self.devices[dev].channels[dev_id].max_val
         res = self.devices[dev].channels[dev_id].resolution
         return [val, raw, ch, min_val, max_val, res]
-

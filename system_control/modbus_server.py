@@ -2,12 +2,13 @@ import logging
 import threading
 import time
 
-#  pymodbus imports
-from pymodbus.version import version
-from pymodbus.device import ModbusDeviceIdentification
 from pymodbus.datastore import ModbusSequentialDataBlock
 from pymodbus.datastore import ModbusSlaveContext, ModbusServerContext
+from pymodbus.device import ModbusDeviceIdentification
 from pymodbus.server.asynchronous import StartTcpServer, StopServer
+
+#  pymodbus imports
+from pymodbus.version import version
 
 log = logging.getLogger(__name__)
 logging.getLogger("pymodbus").setLevel(logging.WARNING)
@@ -45,8 +46,12 @@ class ModbusServer(object):
         self.leak_detected_reg = self.modbus_config["system_registers"]["leak_detected"]
         self.thermal_fault_reg = self.modbus_config["system_registers"]["thermal_fault"]
         self.sensor_fault_reg = self.modbus_config["system_registers"]["sensor_fault"]
-        self.driver_state_register = self.modbus_config["system_registers"]["driver_state_register"]
-        self.current_power_register = self.modbus_config["system_registers"]["current_power"]
+        self.driver_state_register = self.modbus_config["system_registers"][
+            "driver_state_register"
+        ]
+        self.current_power_register = self.modbus_config["system_registers"][
+            "current_power"
+        ]
         self.run_time_register = self.modbus_config["system_registers"]["run_time"]
 
         self.info_registers = self.modbus_config["info_registers"]
@@ -59,11 +64,11 @@ class ModbusServer(object):
         self.version = 4
 
         self.identity = ModbusDeviceIdentification()
-        self.identity.VendorName = 'Meta'
-        self.identity.ProductCode = 'A404 LTR'
-        self.identity.VendorUrl = 'https://github.com/rchavira/ltr_control_software'
-        self.identity.ProductName = 'LTR Controller'
-        self.identity.ModelName = 'Pymodbus Server'
+        self.identity.VendorName = "Meta"
+        self.identity.ProductCode = "A404 LTR"
+        self.identity.VendorUrl = "https://github.com/rchavira/ltr_control_software"
+        self.identity.ProductName = "LTR Controller"
+        self.identity.ModelName = "Pymodbus Server"
         self.identity.MajorMinorRevision = version.short()
 
         # self.context[0].setValues(1, 19, [b])  #  Input coil
@@ -96,24 +101,18 @@ class ModbusServer(object):
             self.server_started = False
 
     def get_shutdown_cmd(self):
-        values = self.context[0].getValues(
-            3, self.shutdown_reg, count=1
-        )
+        values = self.context[0].getValues(3, self.shutdown_reg, count=1)
         return values[0]
 
     def get_run_status(self):
-        values = self.context[0].getValues(
-            3, self.run_reg, count=1
-        )
+        values = self.context[0].getValues(3, self.run_reg, count=1)
         return values[0]
 
     def set_run_status(self, rs):
         self.update_holding_register(self.run_reg, [rs])
 
     def get_power_target(self):
-        values = self.context[0].getValues(
-            3, self.power_reg, count=1
-        )
+        values = self.context[0].getValues(3, self.power_reg, count=1)
         return values[0]
 
     def set_power_target(self, pt):
@@ -123,9 +122,13 @@ class ModbusServer(object):
         for si in sdict.keys():
             try:
                 v = float(sdict[si])
-                dec_p = int(self.modbus_config["sensor_registers"][si]["decimal_places"])
+                dec_p = int(
+                    self.modbus_config["sensor_registers"][si]["decimal_places"]
+                )
                 values = [int(v * (10 ** dec_p))]
-                self.update_input_register(self.modbus_config["sensor_registers"][si]["address"], values)
+                self.update_input_register(
+                    self.modbus_config["sensor_registers"][si]["address"], values
+                )
             except Exception as ex:
                 log.error(f"{si}: {sdict[si]} - {ex}")
 
@@ -140,7 +143,16 @@ class ModbusServer(object):
     def update_holding_register(self, addr, values):
         self.context[0].setValues(3, addr, values)
 
-    def update_system_flags(self, running, system_stop, leak_detect, thermal_fault, sensor_fault, current_power, on_time):
+    def update_system_flags(
+        self,
+        running,
+        system_stop,
+        leak_detect,
+        thermal_fault,
+        sensor_fault,
+        current_power,
+        on_time,
+    ):
         self.set_flag(running, self.running_reg)
         self.set_flag(system_stop, self.system_stop_reg)
         self.set_flag(leak_detect, self.leak_detected_reg)

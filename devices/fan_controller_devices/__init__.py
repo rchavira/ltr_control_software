@@ -44,7 +44,9 @@ def loader(dev_type, **cfg):
             from devices.fan_controller_devices.emulated import EmulatedFanSpeed
         device = EmulatedFanSpeed(**cfg)
     elif dev_type == FanDevType.fan_control_board:
-        if 'FCBv1Interface' not in sys.modules:
-            from devices.fan_controller_devices.fan_control_board_v1 import FCBv1Interface
+        if "FCBv1Interface" not in sys.modules:
+            from devices.fan_controller_devices.fan_control_board_v1 import (
+                FCBv1Interface,
+            )
         device = FCBv1Interface(**cfg)
     return device

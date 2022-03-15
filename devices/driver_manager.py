@@ -1,5 +1,4 @@
 import logging
-
 from threading import Thread
 from time import sleep, time
 from typing import Dict, Any
@@ -106,7 +105,9 @@ class DriverManager(object):
         while self.updater_running:
             for dev_id in self.device_data.keys():
                 dev = self.device_data[dev_id].device_id
-                self.device_data[dev_id].current_dc = self.devices[dev].drivers[dev_id].duty_cycle
+                self.device_data[dev_id].current_dc = (
+                    self.devices[dev].drivers[dev_id].duty_cycle
+                )
                 cdc = self.device_data[dev_id].current_dc
                 tdc = self.device_data[dev_id].target_dc
                 rtime = self.devices[dev].ramp_up_delay
@@ -116,9 +117,12 @@ class DriverManager(object):
                     dc = tdc
                     if rstep > 0:
                         if cdc < tdc:
-                            if time() - self.device_data[dev_id].current_dc_time_stamp > rtime:
+                            if (
+                                time() - self.device_data[dev_id].current_dc_time_stamp
+                                > rtime
+                            ):
                                 if rstep > (tdc - cdc):
-                                    rstep = (tdc - cdc)
+                                    rstep = tdc - cdc
                                 dc = cdc + rstep
                                 self.device_data[dev_id].current_dc_time_stamp = time()
                                 self._set_driver_dc(dev, dev_id, dc)
@@ -152,10 +156,16 @@ class DriverManager(object):
     def get_values(self, dev_id):
         dev = self.device_data[dev_id].device_id
         if self.device_data[dev_id].current_dc_time_stamp > 0:
-            time_last_commanded = int(time() - self.device_data[dev_id].current_dc_time_stamp)
+            time_last_commanded = int(
+                time() - self.device_data[dev_id].current_dc_time_stamp
+            )
         else:
             time_last_commanded = 0
-        return [self.device_data[dev_id].current_dc, self.device_data[dev_id].target_dc,
-                self.devices[dev].drivers[dev_id].channel, self.devices[dev].drivers[dev_id].pwm_value,
-                time_last_commanded,
-                1 if self.devices[dev].drivers[dev_id].locked else 0]
+        return [
+            self.device_data[dev_id].current_dc,
+            self.device_data[dev_id].target_dc,
+            self.devices[dev].drivers[dev_id].channel,
+            self.devices[dev].drivers[dev_id].pwm_value,
+            time_last_commanded,
+            1 if self.devices[dev].drivers[dev_id].locked else 0,
+        ]

@@ -1,16 +1,14 @@
 """
 Emulated Digital IO Interface
 """
-from devices.dio_devices import DioInterface
-import RPi.GPIO as GPIO
 import logging
+
+import RPi.GPIO as GPIO
+from devices.dio_devices import DioInterface
 
 log = logging.getLogger(__name__)
 
-default_config = {
-    "input_pins": [6, 16],
-    "output_pins": [5, 17, 22, 23, 26, 27]
-}
+default_config = {"input_pins": [6, 16], "output_pins": [5, 17, 22, 23, 26, 27]}
 
 
 class RaspiDio(DioInterface):

@@ -5,8 +5,8 @@ Max1168 interface
 import logging
 import struct
 
-from devices.bus_manager import BusManager
 from devices.adc_devices import AdcInfo, AdcInterface
+from devices.bus_manager import BusManager
 from devices.chip_select import ChipSelector
 
 log = logging.getLogger(__name__)
@@ -14,17 +14,9 @@ log = logging.getLogger(__name__)
 default_config = {
     "chip_select": 9,
     "devices": {
-        "t11": {
-            "channel": 0,
-            "min_val": 0,
-            "max_val": 150
-        },
-        "t12": {
-            "channel": 1,
-            "min_val": 0,
-            "max_val": 150
-        }
-    }
+        "t11": {"channel": 0, "min_val": 0, "max_val": 150},
+        "t12": {"channel": 1, "min_val": 0, "max_val": 150},
+    },
 }
 
 
@@ -44,7 +36,7 @@ class Max1168Interface(AdcInterface):
                 dev_name,
                 kwargs["devices"][dev_id]["min_val"],
                 kwargs["devices"][dev_id]["max_val"],
-                self.resolution
+                self.resolution,
             )
 
     def read_channel(self, dev_id):
@@ -53,7 +45,7 @@ class Max1168Interface(AdcInterface):
             self.chip_select.chip_select(self.cs)
 
             # cmd = struct.pack("<H", (int(self.channels[dev_id].channel) << 5 | 3 << 3))
-            chdat = (int(self.channels[dev_id].channel) << 5 | 3 << 3)
+            chdat = int(self.channels[dev_id].channel) << 5 | 3 << 3
             cmd = struct.pack("<B", chdat)
             # log.debug(f"{dev_id} :> {chdat}")
             response = self.bus_mgr.send_and_receive(cmd, 3)
@@ -66,4 +58,3 @@ class Max1168Interface(AdcInterface):
             self.bus_mgr.bus_blocker(dev_id, False)
 
         return self.channels[dev_id].value
-

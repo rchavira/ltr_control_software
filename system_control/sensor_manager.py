@@ -1,22 +1,14 @@
 import logging
-import sys
-
 from enum import Enum
 from threading import Thread
 from time import sleep
 
+from devices.adc_manager import AdcManager
 from devices.bus_manager import BusManager
-from devices.spi_interface import SpiInterface
-from devices.i2c_interface import I2CInterface
 from devices.chip_select import ChipSelector
 from devices.dio_devices import DioInterface
-from devices.dio_devices import loader as dio_loader
-from devices.fan_controller_devices import FanDevType, FanSpeedInterface, loader as fan_loader
-
-from devices.adc_manager import AdcManager
+from devices.fan_controller_devices import FanSpeedInterface
 from devices.thermo_manager import ThermoManager
-
-from system_control import ControllerDeviceTypes
 from system_control.sensor_aggregator import SensorAggregator
 
 log = logging.getLogger(__name__)
@@ -30,15 +22,9 @@ default_config = {
                 "chip_select": 11,
                 "input_file": "test.txt",
                 "resolution": 1024,
-                "devices": {
-                    "leak_1": {
-                        "channel": 3,
-                        "min_val": 0,
-                        "max_val": 1024
-                    }
-                }
+                "devices": {"leak_1": {"channel": 3, "min_val": 0, "max_val": 1024}},
             }
-        }
+        },
     },
     "thermo": {
         "update_interval": 1,
@@ -49,25 +35,25 @@ default_config = {
                 "config": {
                     "junction_values_file": "test.txt",
                     "internal_values_file": "test2.txt",
-                    "flag_values_file": "test3.txt"
-                }
+                    "flag_values_file": "test3.txt",
+                },
             },
             "t2": {
                 "device_type": "emulated",
                 "config": {
                     "junction_values_file": "test.txt",
                     "internal_values_file": "test2.txt",
-                    "flag_values_file": "test3.txt"
-                }
-            }
-        }
+                    "flag_values_file": "test3.txt",
+                },
+            },
+        },
     },
     "fan_speed_device_type": "fan_control_board",
     "fan_speed_device": {
         "port": "/dev/ttyusb0",
         "baudrate": 115200,
         "timeout": 0.5,
-        "channel_count": 8
+        "channel_count": 8,
     },
     "internal_leak_dev_id": "leak_1",
     "leak_detection_mode": "delta",
@@ -76,7 +62,7 @@ default_config = {
     "leak_report_out_pin": 2,
     "leak_report_active": 0,
     "leak_report_inactive": 1,
-    "leak_sample_rate": 10
+    "leak_sample_rate": 10,
 }
 
 
@@ -126,7 +112,9 @@ class SensorManager(object):
 
         self.sensor_flag = False
         self.leak_flag = False
-        self.leak_data = SensorAggregator(self.internal_leak_dev_id, self.leak_sample_rate)
+        self.leak_data = SensorAggregator(
+            self.internal_leak_dev_id, self.leak_sample_rate
+        )
 
         self.sensor_data = {}
 
@@ -175,13 +163,19 @@ class SensorManager(object):
                 elif self.leak_detection_mode == LeakDetectionModes.range:
                     if self.leak_data.get_range() > self.leak_detection_value:
                         leak_flag = True
-            log.debug(f"{self.internal_leak_dev_id}: {self.sensor_data[self.internal_leak_dev_id]}")
-            log.debug(f"Leak flag: {leak_flag} leak_value:{leak_value} threshold:{self.leak_detection_value}")
+            log.debug(
+                f"{self.internal_leak_dev_id}: {self.sensor_data[self.internal_leak_dev_id]}"
+            )
+            log.debug(
+                f"Leak flag: {leak_flag} leak_value:{leak_value} threshold:{self.leak_detection_value}"
+            )
 
             if leak_flag:
                 self.dio.write_digital(self.external_leak_pin, self.leak_report_active)
             else:
-                self.dio.write_digital(self.external_leak_pin, self.leak_report_inactive)
+                self.dio.write_digital(
+                    self.external_leak_pin, self.leak_report_inactive
+                )
 
             self.leak_flag = leak_flag
 

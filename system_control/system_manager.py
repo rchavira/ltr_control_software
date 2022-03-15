@@ -1,21 +1,23 @@
 import logging
-
 from threading import Thread
 from time import time, sleep
 
-from config import check_path, read_config
-
-from system_control import ControllerDeviceTypes
-from system_control.sensor_manager import SensorManager
+from config import read_config
+from devices.adc_manager import AdcManager
 from devices.bus_manager import BusManager, BusType
 from devices.chip_select import ChipSelector
 from devices.dio_devices import DioInterface, loader as dio_loader
-from devices.adc_manager import AdcManager
-from devices.thermo_manager import ThermoManager
-from devices.fan_controller_devices import FanSpeedInterface, FanDevType, loader as fan_loader
 from devices.driver_manager import DriverManager
-from system_control.thermal_management import ThermalManager
+from devices.fan_controller_devices import (
+    FanSpeedInterface,
+    FanDevType,
+    loader as fan_loader,
+)
+from devices.thermo_manager import ThermoManager
+from system_control import ControllerDeviceTypes
 from system_control.modbus_server import ModbusServer
+from system_control.sensor_manager import SensorManager
+from system_control.thermal_management import ThermalManager
 
 log = logging.getLogger(__name__)
 
@@ -53,40 +55,49 @@ class SystemManager(object):
         self.power_on_target = self.cfg["power_on_target"]
         self.max_power_target = self.cfg["max_power_target"]
 
-        ctype = ControllerDeviceTypes[self.cfg['controller_type']]
+        ctype = ControllerDeviceTypes[self.cfg["controller_type"]]
 
-        cfg = read_config(self.cfg['spi_config'])
+        cfg = read_config(self.cfg["spi_config"])
         self.spi = BusManager(BusType.spi, ctype, **cfg)
 
-        cfg = read_config(self.cfg['i2c_config'])
+        cfg = read_config(self.cfg["i2c_config"])
         self.i2c = BusManager(BusType.i2c, ctype, **cfg)
 
-        cfg = read_config(self.cfg['driver_config'])
+        cfg = read_config(self.cfg["driver_config"])
         self.dm = DriverManager(self.spi, self.i2c, **cfg)
 
-        cfg = read_config(self.cfg['dio_config'])
+        cfg = read_config(self.cfg["dio_config"])
         self.dio = dio_loader(ctype, **cfg)
 
-        cfg = read_config(self.cfg['chip_select_config'])
+        cfg = read_config(self.cfg["chip_select_config"])
         self.ch_sel = ChipSelector(self.dio, **cfg)
 
-        cfg = read_config(self.cfg['adc_config'])
+        cfg = read_config(self.cfg["adc_config"])
         self.adc = AdcManager(self.spi, self.i2c, self.ch_sel, **cfg)
 
-        cfg = read_config(self.cfg['thermocouple_config'])
+        cfg = read_config(self.cfg["thermocouple_config"])
         self.thermo = ThermoManager(self.spi, self.i2c, self.ch_sel, **cfg)
 
-        cfg = read_config(self.cfg['fan_speed_device_config'])
-        ftype = FanDevType[self.cfg['fan_dev_type']]
+        cfg = read_config(self.cfg["fan_speed_device_config"])
+        ftype = FanDevType[self.cfg["fan_dev_type"]]
         self.fans = fan_loader(ftype, **cfg)
 
-        cfg = read_config(self.cfg['sensor_manager'])
-        self.sm = SensorManager(self.spi, self.i2c, self.ch_sel, self.dio, self.adc, self.thermo, self.fans, **cfg)
+        cfg = read_config(self.cfg["sensor_manager"])
+        self.sm = SensorManager(
+            self.spi,
+            self.i2c,
+            self.ch_sel,
+            self.dio,
+            self.adc,
+            self.thermo,
+            self.fans,
+            **cfg,
+        )
 
-        cfg = read_config(self.cfg['thermal_manager'])
+        cfg = read_config(self.cfg["thermal_manager"])
         self.tm = ThermalManager(self.sm, self.dm, **cfg)
 
-        cfg = read_config(self.cfg['modbus_config'])
+        cfg = read_config(self.cfg["modbus_config"])
         self.mb = ModbusServer(**cfg)
 
     def start_system(self):
@@ -134,19 +145,6 @@ class SystemManager(object):
             run_ttv = self.mb.get_run_status()
             shutdown = self.mb.get_shutdown_cmd()
 
-            if shutdown != 0:
-                self.mb.update_system_flags(
-                    running=(run_ttv == 1),
-                    system_stop=(shutdown != 0),
-                    leak_detect=self.sm.leak_flag,
-                    thermal_fault=self.tm.thermal_flag,
-                    sensor_fault=self.sm.sensor_flag,
-                    current_power=current_power,
-                    on_time=time_at_power
-                )
-                self.stop_system()
-                break
-
             if self.sm.leak_flag or self.tm.thermal_flag:
                 run_ttv = 0
 
@@ -163,11 +161,29 @@ class SystemManager(object):
 
             self.mb.update_sensor_info(self.sm.sensor_data)
 
-            self.mb.update_temp_registers(self.tm.monitor_temp, self.tm.inlet_temp, self.tm.outlet_temp)
+            self.mb.update_temp_registers(
+                self.tm.monitor_temp, self.tm.inlet_temp, self.tm.outlet_temp
+            )
 
             current_power_dc = self.dm.device_data[self.tm.driver_group[0]].current_dc
-            time_at_power = time() - self.dm.device_data[self.tm.driver_group[0]].current_dc_time_stamp
-            current_power = (current_power_dc/100) * self.max_power_target
+            time_at_power = (
+                time()
+                - self.dm.device_data[self.tm.driver_group[0]].current_dc_time_stamp
+            )
+            current_power = (current_power_dc / 100) * self.max_power_target
+
+            if shutdown != 0:
+                self.mb.update_system_flags(
+                    running=(run_ttv == 1),
+                    system_stop=(shutdown != 0),
+                    leak_detect=self.sm.leak_flag,
+                    thermal_fault=self.tm.thermal_flag,
+                    sensor_fault=self.sm.sensor_flag,
+                    current_power=self.dm.current_power,
+                    on_time=self.dm.time_at_power,
+                )
+                self.stop_system()
+                break
 
             self.mb.update_system_flags(
                 running=(run_ttv == 1),
@@ -176,7 +192,7 @@ class SystemManager(object):
                 thermal_fault=self.tm.thermal_flag,
                 sensor_fault=self.sm.sensor_flag,
                 current_power=current_power,
-                on_time=time_at_power
+                on_time=time_at_power,
             )
 
             ddict = {}
@@ -188,4 +204,3 @@ class SystemManager(object):
 
             self.mb.update_driver_states(ddict)
             sleep(0.5)
-

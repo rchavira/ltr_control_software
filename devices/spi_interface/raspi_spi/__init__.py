@@ -3,14 +3,12 @@ Raspi SPI Interface
 """
 
 import logging
-import board
 
+import board
+from adafruit_bus_device.spi_device import SPIDevice
 from devices.communication import BusType
 from devices.spi_interface import SpiInterface
-
 from digitalio import DigitalInOut
-from adafruit_bus_device.spi_device import SPIDevice
-from time import sleep
 
 log = logging.getLogger(__name__)
 

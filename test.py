@@ -1,20 +1,28 @@
-import logging
-import sys
 import argparse
+import logging
 
 from tests.adc_test import hardware_test as adc_test
-from tests.dio_tests import hardware_test as dio_test
 from tests.chip_select_test import hardware_test as ch_sel_test
-from tests.thermo_tests import hardware_test as thermo_test
-from tests.sensor_tests import test as sensors_test
-from tests.fan_tests import test as fan_test
+from tests.dio_tests import hardware_test as dio_test
 from tests.driver_tests import test as driver_test
+from tests.fan_tests import test as fan_test
+from tests.sensor_tests import test as sensors_test
 from tests.thermal_manager_test import test as thermal_manager_test
+from tests.thermo_tests import hardware_test as thermo_test
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(message)s")
 
 
-def main(dio=False, ch_Sel=False, fans=False, adc=False, driver=False, thermo=False, sensors=False, thermal=False):
+def main(
+    dio=False,
+    ch_Sel=False,
+    fans=False,
+    adc=False,
+    driver=False,
+    thermo=False,
+    sensors=False,
+    thermal=False,
+):
     result = True
 
     if result and dio:
@@ -50,15 +58,21 @@ def main(dio=False, ch_Sel=False, fans=False, adc=False, driver=False, thermo=Fa
         result = thermal_manager_test()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="ltr_control",
-        usage='%(prog)s [options]',
+        usage="%(prog)s [options]",
         description="LTR Control Software Interface Testing",
-        epilog='Meta Copyright 2022'
+        epilog="Meta Copyright 2022",
     )
-    parser.add_argument('--loglevel', default=1, help='Log level [DEBUG (1-5) CRITICAL]')
-    parser.add_argument('--test', default="ALL", help='What to test.  DIO, ADC, FANS, TC, SENSORS, THERMAL, ALL')
+    parser.add_argument(
+        "--loglevel", default=1, help="Log level [DEBUG (1-5) CRITICAL]"
+    )
+    parser.add_argument(
+        "--test",
+        default="ALL",
+        help="What to test.  DIO, ADC, FANS, TC, SENSORS, THERMAL, ALL",
+    )
 
     args = parser.parse_args()
 
@@ -81,7 +95,7 @@ if __name__ == '__main__':
     logging.info(args.test)
     dio = adc = fans = thermo = sensors = thermal = False
     if args.test == "ALL":
-        dio = adc = fans = thermo = sensors = thermal=True
+        dio = adc = fans = thermo = sensors = thermal = True
     else:
         if "DIO" in args.test:
             dio = True

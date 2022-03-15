@@ -22,11 +22,11 @@ class SpiInterface(BusInterface):
 def loader(dev_type, **cfg):
     device = None  # type: SpiInterface
     if dev_type == ControllerDeviceTypes.emulated:
-        if 'EmulatedSpi' not in sys.modules:
+        if "EmulatedSpi" not in sys.modules:
             from devices.spi_interface.emulated import EmulatedSpi
         device = EmulatedSpi(BusType.spi, **cfg)
     elif dev_type == ControllerDeviceTypes.raspi:
-        if 'RaspiSpi' not in sys.modules:
+        if "RaspiSpi" not in sys.modules:
             from devices.spi_interface.raspi_spi import RaspiSpi
         device = RaspiSpi(BusType.spi, **cfg)
 

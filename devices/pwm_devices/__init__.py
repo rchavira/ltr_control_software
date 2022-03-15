@@ -1,8 +1,8 @@
 import logging
 import sys
-
 from enum import Enum
 from typing import Dict, Any
+
 from devices.bus_manager import BusManager
 
 log = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class DriverInfo(object):
     def set_dc(self, dc):
         dc = int(dc)
         self.duty_cycle = dc
-        self.pwm_value = int((dc/100) * self.resolution)
+        self.pwm_value = int((dc / 100) * self.resolution)
 
 
 class PwmInterface(object):
@@ -51,11 +51,11 @@ class PwmInterface(object):
 def loader(dev_name, dev_type, bus, **cfg):
     device = None
     if dev_type == DriverTypes.emulated:
-        if 'EmulatedPwm' not in sys.modules:
+        if "EmulatedPwm" not in sys.modules:
             from devices.pwm_devices.emulated import EmulatedPwm
         device = EmulatedPwm(dev_name, bus, **cfg)
     elif dev_type == DriverTypes.pca9685:
-        if 'PCA9685Interface' not in sys.modules:
+        if "PCA9685Interface" not in sys.modules:
             from devices.pwm_devices.pca9685_interface import PCA9685Interface
         device = PCA9685Interface(dev_name, bus, **cfg)
     return device
