@@ -25,5 +25,8 @@ def loader(dev_type, **cfg):
         if "RaspiI2c" not in sys.modules:
             from devices.i2c_interface.raspi_i2c import RaspiI2c
         device = RaspiI2c(BusType.i2c, **cfg)
+    elif dev_type == ControllerDeviceTypes.tinkerboard:
+        if "TinkerBoardI2c" not in sys.modules:
+            from devices.i2c_interface.tinkerboard_i2c import TinkerBoardI2c
 
     return device

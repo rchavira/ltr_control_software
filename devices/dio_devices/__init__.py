@@ -38,5 +38,8 @@ def loader(dev_type, **cfg):
         if "RaspiDio" not in sys.modules:
             from devices.dio_devices.raspi_dio import RaspiDio
         device = RaspiDio(**cfg)
+    elif dev_type == ControllerDeviceTypes.tinkerboard:
+        if "TinkerBoardDio" not in sys.modules:
+            from devices.dio_devices.tinkerboard_dio import TinkerBoardDIO
 
     return device

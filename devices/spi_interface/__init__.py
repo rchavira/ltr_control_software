@@ -29,5 +29,8 @@ def loader(dev_type, **cfg):
         if "RaspiSpi" not in sys.modules:
             from devices.spi_interface.raspi_spi import RaspiSpi
         device = RaspiSpi(BusType.spi, **cfg)
+    elif dev_type == ControllerDeviceTypes.tinkerboard:
+        if "TinkerBoardSpi" not in sys.modules:
+            from devices.spi_interface.tinkerboard_spi import TinkerBoardSpi
 
     return device
