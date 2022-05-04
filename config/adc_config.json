@@ -5,14 +5,14 @@
             "device_type": "max1168",
             "chip_select": 10,
             "devices": {
-                "i1": {"channel": 0, "min_val": 0, "max_val": 2500},
-                "i2": {"channel": 1, "min_val": 0, "max_val": 2500},
-                "i3": {"channel": 2, "min_val": 0, "max_val": 2500},
-                "i4": {"channel": 3, "min_val": 0, "max_val": 2500},
-                "v1": {"channel": 4, "min_val": 0, "max_val": 6000},
-                "v2": {"channel": 5, "min_val": 0, "max_val": 6000},
-                "v3": {"channel": 6, "min_val": 0, "max_val": 6000},
-                "v4": {"channel": 7, "min_val": 0, "max_val": 6000}
+                "i1": {"channel": 0, "min_val": 0, "max_val": 25},
+                "i2": {"channel": 1, "min_val": 0, "max_val": 25},
+                "i3": {"channel": 2, "min_val": 0, "max_val": 25},
+                "i4": {"channel": 3, "min_val": 0, "max_val": 25},
+                "v1": {"channel": 4, "min_val": 0, "max_val": 100},
+                "v2": {"channel": 5, "min_val": 0, "max_val": 100},
+                "v3": {"channel": 6, "min_val": 0, "max_val": 100},
+                "v4": {"channel": 7, "min_val": 0, "max_val": 100}
             }
         },
         "adc2": {

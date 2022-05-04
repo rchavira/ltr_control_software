@@ -1,4 +1,6 @@
 {
   "version": 1,
-  "date": "2022.03.09"
+  "date": "2022.03.09",
+  "input_file": "zeros.txt",
+  "output_file": "spi_out.txt"
 }

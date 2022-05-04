@@ -17,7 +17,6 @@ logging.getLogger("pymodbus").setLevel(logging.WARNING)
 class ModbusServer(object):
     def __init__(self, **kwargs):
         self.modbus_config = kwargs
-
         store = ModbusSlaveContext(
             di=ModbusSequentialDataBlock(
                 0, [0] * int(self.modbus_config["max_registers"]["di"])
@@ -125,9 +124,12 @@ class ModbusServer(object):
                 dec_p = int(
                     self.modbus_config["sensor_registers"][si]["decimal_places"]
                 )
-                values = [int(v * (10 ** dec_p))]
+
+                value = int(v * (10 ** dec_p))
+                if value > (2**16) - 1:
+                    value = (2**16) - 1
                 self.update_input_register(
-                    self.modbus_config["sensor_registers"][si]["address"], values
+                    self.modbus_config["sensor_registers"][si]["address"], [value]
                 )
             except Exception as ex:
                 log.error(f"{si}: {sdict[si]} - {ex}")
@@ -158,8 +160,10 @@ class ModbusServer(object):
         self.set_flag(leak_detect, self.leak_detected_reg)
         self.set_flag(thermal_fault, self.thermal_fault_reg)
         self.set_flag(sensor_fault, self.sensor_fault_reg)
-        self.update_input_register(self.current_power_register, [current_power])
-        self.update_input_register(self.run_time_register, [on_time])
+        log.debug(f"Current Power: {current_power}")
+        log.debug(f"On Time: {on_time}")
+        self.update_input_register(self.current_power_register, [int(current_power)])
+        self.update_input_register(self.run_time_register, [int(on_time)])
 
     def set_info_registers(self):
         self.update_input_register(self.version_register, [self.version])
@@ -179,6 +183,6 @@ class ModbusServer(object):
     def update_driver_states(self, driver_dict):
         values = []
         for ch in driver_dict.keys():
-            values.append(driver_dict[ch])
+            values.append(int(driver_dict[ch]))
 
         self.update_input_register(self.driver_state_register, values)

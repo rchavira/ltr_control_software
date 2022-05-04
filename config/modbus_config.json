@@ -81,9 +81,9 @@
         "tFCB": {"address": 55, "decimal_places": 2}
     },
     "info_registers": {
-        "version": 16,
-        "monitor_temp": 70,
-        "inlet_temp": 71,
-        "outlet_temp": 72
+        "version":16,
+        "monitor_temp": 17,
+        "inlet_temp": 18,
+        "outlet_temp": 19
     }
 }
