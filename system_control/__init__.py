@@ -9,5 +9,3 @@ class BusTypes(Enum):
 class ControllerDeviceTypes(Enum):
     emulated = 0
     raspi = 1
-    tinkerboard = 2
-
