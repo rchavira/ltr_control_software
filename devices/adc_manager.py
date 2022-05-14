@@ -51,10 +51,14 @@ class AdcManager(object):
 
         self.devices[dev] = device
 
+    def update_dict(self, dev_id, data):
+        pass
+
     def updater(self):
         while self.updater_running:
             for dev_id in self.data.keys():
                 dev = self.data[dev_id].device_id
+                #self.bq.add_to_queue(dev_id, {dev_id}, self.devices[dev].read_channel, self.update_dict)
                 self.devices[dev].read_channel(dev_id)
                 # log.debug(f"{dev_id}: {self.get_values(dev_id)}")
             sleep(self.update_interval)

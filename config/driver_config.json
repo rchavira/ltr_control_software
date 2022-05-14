@@ -52,8 +52,17 @@
                         "channel": 5,
                         "offset": 0,
                         "resolution": 65535
+                    },
+                    "fan3": {
+                        "channel": 6,
+                        "offset": 0,
+                        "resolution": 65535
+                    },
+                    "fan4": {
+                        "channel": 7,
+                        "offset": 0,
+                        "resolution": 65535
                     }
-
                 }
             }
         }

@@ -32,9 +32,14 @@ class EmulatedAdc(AdcInterface):
                 self.resolution,
             )
 
-    def read_channel(self, dev_id):
+    def read_channel_old(self, dev_id):
         self.bus.bus_blocker(dev_id, True)
         raw = get_next_int(self.input_file)
         self.channels[dev_id].set_value(raw)
         self.bus.bus_blocker(dev_id, False)
+        return self.channels[dev_id].value
+
+    def read_channel(self, dev_id):
+        raw = get_next_int(self.input_file)
+        self.channels[dev_id].set_value(raw)
         return self.channels[dev_id].value
