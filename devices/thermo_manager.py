@@ -134,6 +134,16 @@ class ThermoManager(object):
         self.update_thread = None
 
     def get_values(self, dev_id):
+        self.devices[dev_id].init_device()
+        self.device_data[dev_id].junction_temp = self.devices[
+            dev_id
+        ].get_junction_temp()
+        self.device_data[dev_id].internal_temp = self.devices[
+            dev_id
+        ].get_internal_temp()
+        self.device_data[dev_id].flag = self.devices[dev_id].get_faults()
+        self.devices[dev_id].close_device()
+
         jt = self.device_data[dev_id].junction_temp
         it = self.device_data[dev_id].internal_temp
         ft = 1 if self.device_data[dev_id].flag else 0

@@ -76,6 +76,7 @@ class AdcManager(object):
 
     def get_values(self, dev_id):
         dev = self.data[dev_id].device_id
+        self.devices[dev].read_channel(dev_id)
         ch = self.devices[dev].channels[dev_id].channel
         raw = self.devices[dev].channels[dev_id].raw_value
         val = self.devices[dev].channels[dev_id].value
