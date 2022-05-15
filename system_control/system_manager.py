@@ -106,9 +106,9 @@ class SystemManager(object):
 
         self.dm.start_manager()
 
-        self.thermo.start_manager()
+        #self.thermo.start_manager()
 
-        self.adc.start_manager()
+        #self.adc.start_manager()
 
         self.fans.start_updater()
         self.sm.start_manager()
